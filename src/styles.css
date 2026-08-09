@@ -189,3 +189,95 @@
   transform: rotate(-8deg);
   opacity: 0.85;
 }
+
+/* ── Playful layer: aurora, gradients, marquee, shine ───────────────── */
+
+@utility aurora {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+@utility blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(70px);
+  opacity: 0.4;
+  will-change: transform;
+}
+
+@utility ink-gradient {
+  background-image: linear-gradient(
+    100deg,
+    var(--expense),
+    var(--gold) 45%,
+    var(--income)
+  );
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@utility shine {
+  position: relative;
+  overflow: hidden;
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-120%);
+    background: linear-gradient(
+      100deg,
+      transparent 30%,
+      color-mix(in oklab, white 45%, transparent) 50%,
+      transparent 70%
+    );
+  }
+  &:hover::after {
+    transform: translateX(120%);
+    transition: transform 0.75s ease;
+  }
+}
+
+@utility marquee-track {
+  display: flex;
+  width: max-content;
+  animation: tally-marquee 28s linear infinite;
+}
+
+@keyframes tally-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes tally-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@utility floaty {
+  animation: tally-float 6s ease-in-out infinite;
+}
+
+@utility glow-ring {
+  box-shadow:
+    0 0 0 1px color-mix(in oklab, var(--gold) 35%, transparent),
+    0 12px 40px -12px color-mix(in oklab, var(--gold) 45%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track,
+  .floaty {
+    animation: none;
+  }
+}
