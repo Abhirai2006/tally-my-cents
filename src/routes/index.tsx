@@ -4,6 +4,8 @@ import { motion, useMotionValue, useSpring, useScroll, useTransform } from "moti
 import { ArrowRight, NotebookPen, PieChart, RefreshCw, Sparkles } from "lucide-react";
 import { Footer } from "@/components/Footer";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import heroVideo from "@/assets/hero-ledger.mp4.asset.json";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
