@@ -14,7 +14,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Toaster } from "@/components/ui/sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { themeScript } from "@/lib/theme";
-import { Aurora } from "@/components/Aurora";
+import { LedgerBackground } from "@/components/LedgerBackground";
 
 function NotFoundComponent() {
   return (
@@ -137,7 +137,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Aurora />
+      <LedgerBackground />
       <div className="paper-grain min-h-screen">
         <Outlet />
       </div>

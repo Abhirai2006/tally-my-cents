@@ -381,9 +381,6 @@
     0 12px 40px -12px color-mix(in oklab, var(--gold) 45%, transparent);
 }
 
-.dark .blob {
-  opacity: 0.34;
-}
 
 @media (prefers-reduced-motion: reduce) {
   .marquee-track,
