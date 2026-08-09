@@ -194,21 +194,125 @@
 
 /* ── Playful layer: aurora, gradients, marquee, shine ───────────────── */
 
-@utility aurora {
+@utility ledger-bg {
   position: fixed;
   inset: 0;
   z-index: 0;
   pointer-events: none;
   overflow: hidden;
+  --mx: 50%;
+  --my: 30%;
 }
 
-@utility blob {
+.ledger-bg .mesh {
   position: absolute;
   border-radius: 9999px;
-  filter: blur(80px);
-  opacity: 0.26;
+  filter: blur(90px);
   will-change: transform;
 }
+
+.ledger-bg .mesh-a {
+  width: 46vw;
+  height: 46vw;
+  left: -10vw;
+  top: -12vw;
+  opacity: 0.3;
+  background: radial-gradient(circle at 30% 30%, var(--expense), transparent 70%);
+  animation: mesh-drift-a 34s ease-in-out infinite;
+}
+
+.ledger-bg .mesh-b {
+  width: 40vw;
+  height: 40vw;
+  right: -8vw;
+  top: 4vw;
+  opacity: 0.28;
+  background: radial-gradient(circle at 60% 40%, var(--gold), transparent 70%);
+  animation: mesh-drift-b 42s ease-in-out infinite;
+}
+
+.ledger-bg .mesh-c {
+  width: 44vw;
+  height: 44vw;
+  left: 18vw;
+  bottom: -16vw;
+  opacity: 0.26;
+  background: radial-gradient(circle at 40% 60%, var(--income), transparent 70%);
+  animation: mesh-drift-c 38s ease-in-out infinite;
+}
+
+.dark .ledger-bg .mesh-a,
+.dark .ledger-bg .mesh-b,
+.dark .ledger-bg .mesh-c {
+  opacity: 0.36;
+}
+
+.ledger-bg .bg-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, color-mix(in oklab, var(--ink) 6%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklab, var(--ink) 6%, transparent) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: radial-gradient(ellipse 90% 70% at 50% 20%, black, transparent 75%);
+}
+
+.ledger-bg .bg-specks {
+  position: absolute;
+  inset: 0;
+}
+
+.ledger-bg .spotlight {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    420px circle at var(--mx) var(--my),
+    color-mix(in oklab, var(--gold) 22%, transparent),
+    transparent 70%
+  );
+  transition: background 240ms ease-out;
+}
+
+.ledger-bg .vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at 50% 45%,
+    transparent 45%,
+    color-mix(in oklab, var(--ink) 14%, transparent) 100%
+  );
+}
+
+@keyframes mesh-drift-a {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(8vw, 6vh, 0) scale(1.12);
+  }
+}
+
+@keyframes mesh-drift-b {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1.05);
+  }
+  50% {
+    transform: translate3d(-7vw, 8vh, 0) scale(0.92);
+  }
+}
+
+@keyframes mesh-drift-c {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(6vw, -7vh, 0) scale(1.1);
+  }
+}
+
 
 @utility ink-gradient {
   background-image: linear-gradient(
