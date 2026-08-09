@@ -5,6 +5,8 @@ import { ArrowRight, NotebookPen, PieChart, RefreshCw, Sparkles } from "lucide-r
 import { Footer } from "@/components/Footer";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import heroVideo from "@/assets/hero-ledger.mp4.asset.json";
+import heroPoster from "@/assets/hero-poster.jpg";
+
 
 
 export const Route = createFileRoute("/")({
