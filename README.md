@@ -1,116 +1,143 @@
-# Tally: Your Personal Ledger
+# Tally — Every rupee, written down.
 
-Tally, a personal expense tracker
+<p align="center">
+  <img src="docs/hero.jpg" alt="Tally — a paper ledger with a fountain pen" width="900" />
+</p>
 
-Build me a personal expense and income tracker web app called Tally. Pick whatever stack, database, and auth provider you think is the best fit — I don't have a preference. Handle hosting and publishing yourself; I don't need a separate deployment step.
+<p align="center">
+  <strong>A calm, paper-feeling ledger for your daily expenses and income.</strong><br/>
+  No bank linking. No clutter. Just your own entries, neatly totalled and always in sync.
+</p>
 
-What it's for
+<p align="center">
+  <img alt="TanStack Start" src="https://img.shields.io/badge/TanStack_Start-v1-ff5b5b?style=flat-square" />
+  <img alt="React" src="https://img.shields.io/badge/React-19-149eca?style=flat-square" />
+  <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-5-3178c6?style=flat-square" />
+  <img alt="Tailwind CSS" src="https://img.shields.io/badge/Tailwind_CSS-4-38bdf8?style=flat-square" />
+  <img alt="Supabase" src="https://img.shields.io/badge/Postgres_+_Auth-Supabase-3ecf8e?style=flat-square" />
+  <img alt="License" src="https://img.shields.io/badge/license-MIT-a87c2c?style=flat-square" />
+</p>
 
-A simple, personal finance ledger for someone who wants to log what they spend and earn day to day, see where their money goes by category, and check it from their phone or laptop with the same account — no manual password syncing, no spreadsheets.
+---
 
-Accounts & sign-in
+## Preview
 
-Users must create an account and log in before seeing any data.
+| Light | Dark |
+| --- | --- |
+| <img src="docs/landing-light.jpg" alt="Tally landing page in light theme" /> | <img src="docs/landing-dark.jpg" alt="Tally landing page in dark theme" /> |
 
-Support Google sign-in as the primary, one-tap option.
+---
 
-Also support plain email + password sign-in/sign-up, for anyone who doesn't want to use Google.
+## Why Tally
 
-Include "forgot password" support for the email option.
+Most money apps feel like a quarterly board meeting. Tally feels like a notebook you
+actually enjoy opening: warm paper tones, a characterful serif, tabular monospace
+numbers, and a little motion where it earns its place.
 
-Each user only ever sees their own data — no shared or public data by default.
+## Features
 
-Whatever a user logs in on one device should already be there when they log in on another device, in real time. That's the core "sync" requirement — I'm not asking for actual bank account linking, just that my own entries follow me across devices.
+- **Two-tap logging** — amount, type, category, date, optional note.
+- **Monthly view** — step month to month; totals for spent, earned and net with
+  animated count-ups.
+- **Charts** — a category donut and a six-month income-vs-expense trend.
+- **Live sync** — entries update in realtime across every signed-in device.
+- **CSV export** — take the current month with you, any time.
+- **Light & dark themes** — remembers your choice, follows your system on first visit,
+  applies before first paint so there's no flash.
+- **Motion, tastefully** — drifting mesh background with gold paper specks, a
+  pointer-tracked spotlight, a 3D-tilting receipt card, a cinematic hero video and
+  scroll reveals. All of it stills itself under `prefers-reduced-motion`.
+- **Private by design** — row-level security means every row is scoped to its owner.
 
-Core data
+## Tech stack
 
-Each entry a user logs needs:
+| Layer | Choice |
+| --- | --- |
+| Framework | TanStack Start v1 (React 19, SSR, file-based routing) |
+| Build | Vite 7 |
+| Styling | Tailwind CSS v4 (CSS-first tokens in `src/styles.css`) |
+| UI | shadcn/ui + Radix primitives, Lucide icons |
+| Motion | Motion for React |
+| Charts | Recharts |
+| Data & auth | Supabase (Postgres, RLS, Google + email auth, realtime) |
+| Server logic | TanStack server functions |
 
-Amount (number, currency ₹ INR by default)
+**Typography:** Fraunces (display) · DM Sans (body) · JetBrains Mono (money).
 
-Type — expense or income
+## Data model
 
-Category — a fixed list is fine to start:
+```sql
+transactions (
+  id          uuid primary key,
+  user_id     uuid not null references auth.users,
+  type        text check (type in ('expense','income')),
+  amount      numeric not null,
+  category    text not null,
+  occurred_on date not null,
+  note        text,
+  created_at  timestamptz default now()
+)
+```
 
-Expense categories: Food & Dining, Groceries, Transport, Shopping, Bills & Utilities, Entertainment, Health & Fitness, Housing & Rent, Education, Travel, Other add if u know anything more
+Row-level security restricts every `select / insert / update / delete` to
+`auth.uid() = user_id`.
 
-Income categories: Salary, Freelance, Investment, Gift, Other add if u know anything more
+## Project structure
 
-Date
+```text
+src/
+  routes/
+    __root.tsx                  app shell, fonts, theme script, background
+    index.tsx                   landing page (hero video, marquee, features)
+    auth.tsx                    sign in / sign up / reset
+    _authenticated/
+      route.tsx                 auth gate
+      dashboard.tsx             month view, summary, charts, ledger
+  components/
+    LedgerBackground.tsx        mesh gradients + spotlight + canvas specks
+    CategoryDonut.tsx           category breakdown
+    TrendChart.tsx              six-month trend
+    LedgerList.tsx              perforated transaction list
+    EntryDialog.tsx             add / edit / delete entry
+    CountUp.tsx  ThemeToggle.tsx  Footer.tsx
+  lib/
+    categories.ts  tally.ts  theme.ts
+```
 
-Note — optional short free-text field
-
-Created/updated timestamps for sorting
-
-Core screens & features (build all of these)
-
-Login / sign-up screen — Google button, email+password form with a toggle between sign-in and create-account, forgot-password link.
-
-Dashboard / overview, scoped to a selected month, with:
-
-Month switcher (previous/next arrows, current month + year shown clearly)
-
-Three summary numbers: total spent, total income, and net balance for that month
-
-A category breakdown chart (donut or bar) for that month's expenses, with a legend showing each category's amount and share
-
-A scrollable list of that month's transactions, each row showing category icon/label, date, note, and amount — expenses and income should be visually distinct (e.g. different color, +/− sign)
-
-Add / edit entry — a form (modal or dedicated screen) to add a new entry or edit/delete an existing one, with a clear toggle between "Expense" and "Income" that changes the category options shown.
-
-Export — a button to export the currently viewed month's transactions as a CSV file.
-
-Fully responsive — this needs to work well on a phone screen, since checking spending on the go is the main use case.
-
-Design direction
-
-Give it a distinct, considered visual identity — not a generic default dashboard template. Some direction to riff on (adapt freely, this is a starting point, not a spec):
-
-Think "personal ledger / receipt book" rather than "corporate fintech dashboard." A calm, paper-like background, an ink-toned dark blue or near-black for primary text and structure, a muted brick-red for expenses, a forest green for income, and a warm gold/amber for balance or highlights.
-
-Pair a characterful serif for headings/wordmark with a clean sans-serif for body text, and use a monospace font for all money amounts — real ledgers align figures, and tabular monospace numbers reinforce that feeling while making amounts easy to scan.
-
-A small signature touch — like a rotated "stamp" badge, a dashed/perforated line motif, or ledger-style dividers between transaction rows — goes a long way toward making it feel designed rather than templated. Pick one and use it with restraint.
-
-Keep it clean and uncluttered otherwise — the personality should come from a few deliberate details, not decoration everywhere.
-
-Explicitly out of scope for this build
-
-No real bank account connection or transaction auto-import. Everything is entered manually by the user. (This would need a licensed aggregator and backend infrastructure — not something to attempt here.)
-
-No multi-user/shared accounts, no admin panel, no payments/subscriptions.
-
-Keep in mind for later (don't build now, but don't design yourself into a corner)
-
-Structure the data model loosely enough that these could be added later without a rebuild: monthly budgets per category with alerts, recurring/repeating entries, attaching a receipt photo to an entry, multi-currency support, free-text search and filters over transactions, user-defined custom categories, and month-over-month spending insights.
-
-Definition of done
-
-A logged-in user can sign in with Google or email, add and edit expense/income entries across categories, see an accurate monthly summary and category chart, browse past months, export a month to CSV, and get the exact same data back when they log into the same account from a different device or browser.
-
-and one more thing add some graphs and charts so that user can visualy analys
-and some animations so that it will help them to come again and again to this website
-dont make a Ai slop be generic and nice
-if possible add some scroll animations, glass morphisms and next level animations, 3d models or 3d animations something like that
-at last add build by Abhirai2006 and github to move there
-
-This project was built with [Lovable](https://lovable.dev).
-
-## Build with Lovable
-
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/8ddf2c21-3e95-464b-a4b9-2728aeed7d32).
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
-
-## Development
-
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+## Running locally
 
 ```sh
 git clone <this-repository-url>
-cd <repository-name>
-npm i
-npm run dev
+cd tally
+npm install
+npm run dev          # http://localhost:8080
 ```
+
+Create a `.env` with your backend credentials:
+
+```sh
+VITE_SUPABASE_URL=...
+VITE_SUPABASE_PUBLISHABLE_KEY=...
+VITE_SUPABASE_PROJECT_ID=...
+```
+
+Other scripts: `npm run build`, `npm run preview`, `npm run lint`, `npm run format`.
+
+## Roadmap
+
+- Monthly budgets with per-category progress rings
+- Logging streaks and milestone celebrations
+- Quick-add parsing (`chai 40`)
+- Recurring entries for rent, salary and subscriptions
+- Year in review — a shareable story-style recap
+- Installable PWA with offline logging
+
+## License
+
+MIT.
+
+---
+
+<p align="center">
+  Built by <a href="https://github.com/Abhirai2006"><strong>Abhirai2006</strong></a>
+</p>

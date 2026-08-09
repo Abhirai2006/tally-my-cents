@@ -4,6 +4,10 @@ import { motion, useMotionValue, useSpring, useScroll, useTransform } from "moti
 import { ArrowRight, NotebookPen, PieChart, RefreshCw, Sparkles } from "lucide-react";
 import { Footer } from "@/components/Footer";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import heroVideo from "@/assets/hero-ledger.mp4.asset.json";
+import heroPoster from "@/assets/hero-poster.jpg";
+
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -159,17 +163,44 @@ function Landing() {
           </motion.div>
         </motion.div>
 
-        {/* Tilting receipt card */}
+        {/* Cinematic film strip + tilting receipt card */}
         <motion.div
           {...reveal}
           onMouseMove={onMove}
           onMouseLeave={onLeave}
-          className="mt-16 [perspective:1100px]"
+          className="relative mt-16 [perspective:1100px] lg:mb-20"
         >
           <motion.div
-            style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-            className="glass floaty rounded-xl p-5 sm:p-7"
+            initial={{ opacity: 0, scale: 0.96 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.8, ease }}
+            className="glass relative overflow-hidden rounded-2xl p-1.5"
           >
+            <video
+              className="h-[240px] w-full rounded-xl bg-secondary object-cover sm:h-[420px]"
+              src={heroVideo.url}
+              poster={heroPoster}
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              aria-label="A fountain pen writing entries in a paper ledger"
+            />
+            <div className="pointer-events-none absolute inset-1.5 rounded-xl bg-gradient-to-t from-background/70 via-transparent to-transparent" />
+            <div className="pointer-events-none absolute bottom-5 left-6 right-6">
+              <p className="font-display text-xl sm:text-3xl">
+                Slow down. <span className="ink-gradient">Write it down.</span>
+              </p>
+            </div>
+          </motion.div>
+
+          <motion.div
+            style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+            className="glass floaty relative z-10 mt-6 rounded-xl p-5 sm:p-7 lg:absolute lg:-bottom-10 lg:right-6 lg:mt-0 lg:w-[340px]"
+          >
+
             <div className="perforated flex items-baseline justify-between pb-3">
               <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
                 This month
@@ -202,6 +233,7 @@ function Landing() {
             </ul>
           </motion.div>
         </motion.div>
+
       </section>
 
       {/* Marquee ticker */}
