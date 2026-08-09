@@ -15,6 +15,8 @@ import { Toaster } from "@/components/ui/sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { themeScript } from "@/lib/theme";
 import { LedgerBackground } from "@/components/LedgerBackground";
+import { registerServiceWorker } from "@/lib/pwa";
+
 
 function NotFoundComponent() {
   return (
@@ -89,6 +91,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "theme-color", content: "#f6f1e6" },
+      { name: "apple-mobile-web-app-capable", content: "yes" },
+      { name: "apple-mobile-web-app-title", content: "Tally" },
+
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -98,7 +104,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap",
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", href: "/favicon.png", type: "image/png" },
+      { rel: "manifest", href: "/manifest.webmanifest" },
+      { rel: "apple-touch-icon", href: "/icons/icon-192.png" },
+
     ],
   }),
   shellComponent: RootShell,
@@ -134,6 +143,12 @@ function RootComponent() {
     });
     return () => data.subscription.unsubscribe();
   }, [router, queryClient]);
+
+  useEffect(() => {
+    registerServiceWorker();
+  }, []);
+
+
 
   return (
     <QueryClientProvider client={queryClient}>

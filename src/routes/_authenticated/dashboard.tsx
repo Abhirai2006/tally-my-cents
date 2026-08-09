@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { motion } from "motion/react";
-import { ChevronLeft, ChevronRight, Download, LogOut, Plus } from "lucide-react";
+import { toast } from "sonner";
+import { CalendarRange, ChevronLeft, ChevronRight, Download, LogOut, Plus } from "lucide-react";
+
 import { supabase } from "@/integrations/supabase/client";
 import { CountUp } from "@/components/CountUp";
 import { CategoryDonut } from "@/components/CategoryDonut";
@@ -12,7 +14,13 @@ import { EntryDialog } from "@/components/EntryDialog";
 import { Footer } from "@/components/Footer";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
-import { monthLabel, monthRange, toCsv, type Txn } from "@/lib/tally";
+import { QuickAdd } from "@/components/QuickAdd";
+import { BudgetSection } from "@/components/BudgetSection";
+import { StreakCard } from "@/components/StreakCard";
+import { RecurringSection } from "@/components/RecurringSection";
+import { postDueRecurring, type Recurring } from "@/lib/recurring";
+import { monthKey, monthLabel, monthRange, toCsv, type Txn } from "@/lib/tally";
+
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
@@ -92,9 +100,29 @@ function Dashboard() {
     return { spent, earned, net: earned - spent };
   }, [monthTxns]);
 
+  // Post any recurring entries that are due this month, once per session.
+  useEffect(() => {
+    let cancelled = false;
+    void (async () => {
+      const { data: rows, error } = await supabase.from("recurring_entries").select("*");
+      if (error || cancelled || !rows?.length) return;
+      const posted = await postDueRecurring(rows as Recurring[], user.id).catch(() => 0);
+      if (posted > 0 && !cancelled) {
+        toast.success(`${posted} recurring ${posted === 1 ? "entry" : "entries"} logged for this month.`);
+        queryClient.invalidateQueries({ queryKey: ["transactions"] });
+        queryClient.invalidateQueries({ queryKey: ["recurring", user.id] });
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [user.id, queryClient]);
+
   const shift = useCallback((delta: number) => {
     setAnchor((d) => new Date(d.getFullYear(), d.getMonth() + delta, 1));
   }, []);
+
+
 
   const signOut = async () => {
     await queryClient.cancelQueries();
@@ -144,17 +172,31 @@ function Dashboard() {
               <ChevronRight className="h-4 w-4" />
             </Button>
           </div>
-          <Button
-            variant="outline"
-            size="sm"
-            className="gap-1.5"
-            onClick={() => toCsv(monthTxns, label)}
-            disabled={!monthTxns.length}
-          >
-            <Download className="h-4 w-4" />
-            <span className="hidden sm:inline">Export CSV</span>
-          </Button>
+          <div className="flex items-center gap-2">
+            <Link to="/year">
+              <Button variant="outline" size="sm" className="gap-1.5">
+                <CalendarRange className="h-4 w-4" />
+                <span className="hidden sm:inline">Year in review</span>
+              </Button>
+            </Link>
+            <Button
+              variant="outline"
+              size="sm"
+              className="gap-1.5"
+              onClick={() => toCsv(monthTxns, label)}
+              disabled={!monthTxns.length}
+            >
+              <Download className="h-4 w-4" />
+              <span className="hidden sm:inline">Export CSV</span>
+            </Button>
+          </div>
         </div>
+
+        <div className="mt-5">
+          <QuickAdd userId={user.id} onSaved={() => void refetch()} />
+        </div>
+
+
 
         <div className="mt-6 grid gap-3 sm:grid-cols-3">
           {[
@@ -217,6 +259,22 @@ function Dashboard() {
             </div>
           </motion.section>
         </div>
+
+        <div className="mt-4 grid gap-4 lg:grid-cols-2">
+          <BudgetSection userId={user.id} monthTxns={monthTxns} />
+          <StreakCard
+            transactions={data}
+            monthTxns={monthTxns}
+            monthKey={monthKey(anchor)}
+            net={totals.net}
+          />
+        </div>
+
+        <div className="mt-4">
+          <RecurringSection userId={user.id} />
+        </div>
+
+
 
         <motion.section
           initial={{ opacity: 0, y: 16 }}

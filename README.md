@@ -123,14 +123,21 @@ VITE_SUPABASE_PROJECT_ID=...
 
 Other scripts: `npm run build`, `npm run preview`, `npm run lint`, `npm run format`.
 
+## Shipped
+
+- **Monthly budgets** — per-category caps with animated progress rings and an 80% nudge
+- **Streaks & milestones** — 21-day heat strip, best-streak tracking and confetti on a surplus month
+- **Quick add** — type `chai 40` or `+salary 68000` and Tally files it for you
+- **Recurring entries** — rent, salary and subscriptions post themselves each month
+- **Year in review** — story-style recap with top categories, best month and a share button
+- **Installable PWA** — add Tally to your home screen; the shell works offline
+
 ## Roadmap
 
-- Monthly budgets with per-category progress rings
-- Logging streaks and milestone celebrations
-- Quick-add parsing (`chai 40`)
-- Recurring entries for rent, salary and subscriptions
-- Year in review — a shareable story-style recap
-- Installable PWA with offline logging
+- Multi-currency ledgers
+- Shared/household ledgers
+- Receipt photo attachments
+
 
 ## License
 
