@@ -172,17 +172,31 @@ function Dashboard() {
               <ChevronRight className="h-4 w-4" />
             </Button>
           </div>
-          <Button
-            variant="outline"
-            size="sm"
-            className="gap-1.5"
-            onClick={() => toCsv(monthTxns, label)}
-            disabled={!monthTxns.length}
-          >
-            <Download className="h-4 w-4" />
-            <span className="hidden sm:inline">Export CSV</span>
-          </Button>
+          <div className="flex items-center gap-2">
+            <Link to="/year">
+              <Button variant="outline" size="sm" className="gap-1.5">
+                <CalendarRange className="h-4 w-4" />
+                <span className="hidden sm:inline">Year in review</span>
+              </Button>
+            </Link>
+            <Button
+              variant="outline"
+              size="sm"
+              className="gap-1.5"
+              onClick={() => toCsv(monthTxns, label)}
+              disabled={!monthTxns.length}
+            >
+              <Download className="h-4 w-4" />
+              <span className="hidden sm:inline">Export CSV</span>
+            </Button>
+          </div>
         </div>
+
+        <div className="mt-5">
+          <QuickAdd userId={user.id} onSaved={() => void refetch()} />
+        </div>
+
+
 
         <div className="mt-6 grid gap-3 sm:grid-cols-3">
           {[
