@@ -65,7 +65,10 @@ function AuthPage() {
         redirectTo: `${window.location.origin}/reset-password`,
       });
       setBusy(false);
-      if (error) return toast.error(error.message);
+      if (error) {
+      toast.error(error.message);
+      return;
+    }
       setSent("reset");
       return;
     }
@@ -76,14 +79,23 @@ function AuthPage() {
         options: { emailRedirectTo: window.location.origin },
       });
       setBusy(false);
-      if (error) return toast.error(error.message);
-      if (!data.session) return setSent("confirm");
+      if (error) {
+      toast.error(error.message);
+      return;
+    }
+      if (!data.session) {
+        setSent("confirm");
+        return;
+      }
       navigate({ to: "/dashboard", replace: true });
       return;
     }
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     setBusy(false);
-    if (error) return toast.error(error.message);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
     navigate({ to: "/dashboard", replace: true });
   };
 
