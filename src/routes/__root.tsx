@@ -15,6 +15,8 @@ import { Toaster } from "@/components/ui/sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { themeScript } from "@/lib/theme";
 import { LedgerBackground } from "@/components/LedgerBackground";
+import { registerServiceWorker } from "@/lib/pwa";
+
 
 function NotFoundComponent() {
   return (
@@ -141,6 +143,12 @@ function RootComponent() {
     });
     return () => data.subscription.unsubscribe();
   }, [router, queryClient]);
+
+  useEffect(() => {
+    registerServiceWorker();
+  }, []);
+
+
 
   return (
     <QueryClientProvider client={queryClient}>
