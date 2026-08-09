@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { motion } from "motion/react";
-import { ChevronLeft, ChevronRight, Download, LogOut, Plus } from "lucide-react";
+import { toast } from "sonner";
+import { CalendarRange, ChevronLeft, ChevronRight, Download, LogOut, Plus } from "lucide-react";
+
 import { supabase } from "@/integrations/supabase/client";
 import { CountUp } from "@/components/CountUp";
 import { CategoryDonut } from "@/components/CategoryDonut";
@@ -98,9 +100,29 @@ function Dashboard() {
     return { spent, earned, net: earned - spent };
   }, [monthTxns]);
 
+  // Post any recurring entries that are due this month, once per session.
+  useEffect(() => {
+    let cancelled = false;
+    void (async () => {
+      const { data: rows, error } = await supabase.from("recurring_entries").select("*");
+      if (error || cancelled || !rows?.length) return;
+      const posted = await postDueRecurring(rows as Recurring[], user.id).catch(() => 0);
+      if (posted > 0 && !cancelled) {
+        toast.success(`${posted} recurring ${posted === 1 ? "entry" : "entries"} logged for this month.`);
+        queryClient.invalidateQueries({ queryKey: ["transactions"] });
+        queryClient.invalidateQueries({ queryKey: ["recurring", user.id] });
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [user.id, queryClient]);
+
   const shift = useCallback((delta: number) => {
     setAnchor((d) => new Date(d.getFullYear(), d.getMonth() + delta, 1));
   }, []);
+
+
 
   const signOut = async () => {
     await queryClient.cancelQueries();
