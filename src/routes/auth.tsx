@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Footer } from "@/components/Footer";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({
@@ -101,10 +102,11 @@ function AuthPage() {
 
   return (
     <div className="relative z-10 flex min-h-screen flex-col">
-      <header className="mx-auto w-full max-w-5xl px-4 py-5">
+      <header className="mx-auto flex w-full max-w-5xl items-center justify-between px-4 py-5">
         <Link to="/" className="font-display text-2xl font-semibold tracking-tight">
           Tally
         </Link>
+        <ThemeToggle />
       </header>
 
       <main className="flex flex-1 items-center justify-center px-4 py-8">

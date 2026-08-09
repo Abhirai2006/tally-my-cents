@@ -10,6 +10,7 @@ import { TrendChart } from "@/components/TrendChart";
 import { LedgerList } from "@/components/LedgerList";
 import { EntryDialog } from "@/components/EntryDialog";
 import { Footer } from "@/components/Footer";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { monthLabel, monthRange, toCsv, type Txn } from "@/lib/tally";
 
@@ -116,6 +117,7 @@ function Dashboard() {
             <span className="truncate text-xs text-muted-foreground">{user.email}</span>
           </div>
           <div className="flex shrink-0 items-center gap-2">
+            <ThemeToggle />
             <Button variant="ghost" size="sm" onClick={signOut} className="gap-1.5">
               <LogOut className="h-4 w-4" />
               <span className="hidden sm:inline">Sign out</span>
