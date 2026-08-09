@@ -384,7 +384,9 @@
 
 @media (prefers-reduced-motion: reduce) {
   .marquee-track,
-  .floaty {
+  .floaty,
+  .ledger-bg .mesh {
     animation: none;
   }
 }
+
