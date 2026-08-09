@@ -166,7 +166,7 @@ function Landing() {
           {...reveal}
           onMouseMove={onMove}
           onMouseLeave={onLeave}
-          className="relative mt-16 [perspective:1100px]"
+          className="relative mt-16 [perspective:1100px] lg:mb-20"
         >
           <motion.div
             initial={{ opacity: 0, scale: 0.96 }}
@@ -176,8 +176,9 @@ function Landing() {
             className="glass relative overflow-hidden rounded-2xl p-1.5"
           >
             <video
-              className="h-[240px] w-full rounded-xl object-cover sm:h-[420px]"
+              className="h-[240px] w-full rounded-xl bg-secondary object-cover sm:h-[420px]"
               src={heroVideo.url}
+              poster={heroPoster}
               autoPlay
               muted
               loop
@@ -185,7 +186,7 @@ function Landing() {
               preload="metadata"
               aria-label="A fountain pen writing entries in a paper ledger"
             />
-            <div className="pointer-events-none absolute inset-1.5 rounded-xl bg-gradient-to-t from-background/85 via-background/10 to-transparent" />
+            <div className="pointer-events-none absolute inset-1.5 rounded-xl bg-gradient-to-t from-background/70 via-transparent to-transparent" />
             <div className="pointer-events-none absolute bottom-5 left-6 right-6">
               <p className="font-display text-xl sm:text-3xl">
                 Slow down. <span className="ink-gradient">Write it down.</span>
@@ -195,8 +196,9 @@ function Landing() {
 
           <motion.div
             style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-            className="glass floaty relative z-10 mt-6 rounded-xl p-5 sm:p-7 lg:absolute lg:-bottom-14 lg:right-6 lg:mt-0 lg:w-[340px]"
+            className="glass floaty relative z-10 mt-6 rounded-xl p-5 sm:p-7 lg:absolute lg:-bottom-10 lg:right-6 lg:mt-0 lg:w-[340px]"
           >
+
             <div className="perforated flex items-baseline justify-between pb-3">
               <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
                 This month
