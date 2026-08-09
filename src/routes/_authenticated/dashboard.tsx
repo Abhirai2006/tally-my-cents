@@ -179,7 +179,7 @@ function Dashboard() {
               </p>
               <CountUp
                 value={card.value}
-                sign={card.sign}
+                {...(card.sign ? { sign: card.sign } : {})}
                 className="money mt-2 block text-2xl font-semibold"
               />
               <span
