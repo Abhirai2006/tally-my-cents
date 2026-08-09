@@ -260,6 +260,22 @@ function Dashboard() {
           </motion.section>
         </div>
 
+        <div className="mt-4 grid gap-4 lg:grid-cols-2">
+          <BudgetSection userId={user.id} monthTxns={monthTxns} />
+          <StreakCard
+            transactions={data}
+            monthTxns={monthTxns}
+            monthKey={monthKey(anchor)}
+            net={totals.net}
+          />
+        </div>
+
+        <div className="mt-4">
+          <RecurringSection userId={user.id} />
+        </div>
+
+
+
         <motion.section
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
