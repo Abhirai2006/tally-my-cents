@@ -12,7 +12,13 @@ import { EntryDialog } from "@/components/EntryDialog";
 import { Footer } from "@/components/Footer";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
-import { monthLabel, monthRange, toCsv, type Txn } from "@/lib/tally";
+import { QuickAdd } from "@/components/QuickAdd";
+import { BudgetSection } from "@/components/BudgetSection";
+import { StreakCard } from "@/components/StreakCard";
+import { RecurringSection } from "@/components/RecurringSection";
+import { postDueRecurring, type Recurring } from "@/lib/recurring";
+import { monthKey, monthLabel, monthRange, toCsv, type Txn } from "@/lib/tally";
+
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
