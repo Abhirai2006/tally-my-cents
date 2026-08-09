@@ -52,6 +52,7 @@
 }
 
 :root {
+  color-scheme: light;
   --radius: 0.5rem;
 
   --paper: oklch(0.965 0.014 88);
@@ -93,6 +94,7 @@
 }
 
 .dark {
+  color-scheme: dark;
   --paper: oklch(0.19 0.014 80);
   --paper-deep: oklch(0.24 0.016 80);
   --ink: oklch(0.94 0.012 88);

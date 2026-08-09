@@ -4,7 +4,7 @@ export type Theme = "light" | "dark";
 
 const KEY = "tally-theme";
 
-export const themeScript = `(function(){try{var t=localStorage.getItem("${KEY}");if(!t){t=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";}if(t==="dark"){document.documentElement.classList.add("dark");}document.documentElement.style.colorScheme=t;}catch(e){}})();`;
+export const themeScript = `(function(){try{var t=localStorage.getItem("${KEY}");if(!t){t=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";}if(t==="dark"){document.documentElement.classList.add("dark");}}catch(e){}})();`;
 
 export function useTheme() {
   const [theme, setTheme] = useState<Theme>("light");
@@ -20,7 +20,6 @@ export function useTheme() {
     setTheme(next);
     localStorage.setItem(KEY, next);
     document.documentElement.classList.toggle("dark", next === "dark");
-    document.documentElement.style.colorScheme = next;
   };
 
   return { theme, toggle: () => apply(theme === "dark" ? "light" : "dark") };
