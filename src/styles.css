@@ -205,8 +205,8 @@
 @utility blob {
   position: absolute;
   border-radius: 9999px;
-  filter: blur(70px);
-  opacity: 0.4;
+  filter: blur(80px);
+  opacity: 0.26;
   will-change: transform;
 }
 
@@ -275,6 +275,10 @@
   box-shadow:
     0 0 0 1px color-mix(in oklab, var(--gold) 35%, transparent),
     0 12px 40px -12px color-mix(in oklab, var(--gold) 45%, transparent);
+}
+
+.dark .blob {
+  opacity: 0.34;
 }
 
 @media (prefers-reduced-motion: reduce) {
