@@ -444,8 +444,8 @@
   background:
     radial-gradient(120% 90% at 20% 10%, color-mix(in oklab, var(--mesh-3) 30%, transparent), transparent 60%),
     linear-gradient(135deg,
-      color-mix(in oklab, var(--mesh-1) 32%, var(--card)),
-      color-mix(in oklab, var(--mesh-2) 26%, var(--card)));
+      color-mix(in oklab, var(--mesh-1) 52%, var(--card)),
+      color-mix(in oklab, var(--mesh-2) 46%, var(--card)));
   transform: translateZ(3px);
 }
 
@@ -453,8 +453,8 @@
   background:
     radial-gradient(120% 90% at 80% 20%, color-mix(in oklab, var(--mesh-2) 28%, transparent), transparent 60%),
     linear-gradient(135deg,
-      color-mix(in oklab, var(--mesh-3) 28%, var(--card)),
-      color-mix(in oklab, var(--mesh-1) 30%, var(--card)));
+      color-mix(in oklab, var(--mesh-3) 48%, var(--card)),
+      color-mix(in oklab, var(--mesh-1) 50%, var(--card)));
   transform: rotateY(180deg) translateZ(3px);
 }
 
@@ -482,7 +482,7 @@
   font-family: var(--font-display);
   font-size: 66px;
   line-height: 1;
-  color: color-mix(in oklab, var(--ink) 78%, transparent);
+  color: color-mix(in oklab, var(--ink) 92%, transparent);
   text-shadow: 0 2px 0 color-mix(in oklab, white 35%, transparent);
 }
 
