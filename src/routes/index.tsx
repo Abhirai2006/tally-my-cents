@@ -118,11 +118,12 @@ function Landing() {
         <div className="flex items-center gap-2">
           <ThemeToggle />
           <Link
-            to="/auth"
+            to={ctaTo}
             className="rounded-full border border-border px-4 py-1.5 text-sm transition-colors hover:bg-accent"
           >
-            Sign in
+            {signedIn ? "Open ledger" : "Sign in"}
           </Link>
+
         </div>
       </motion.header>
 
