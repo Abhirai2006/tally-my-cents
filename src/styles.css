@@ -541,10 +541,11 @@
 
 .rupee-stage .glyph-3d {
   position: absolute;
-  right: 8%;
-  top: 12%;
-  width: 60px;
-  height: 60px;
+  left: 50%;
+  margin-left: 180px;
+  top: 22%;
+  width: 64px;
+  height: 64px;
   transform-style: preserve-3d;
   will-change: transform;
 }
@@ -574,6 +575,9 @@
   }
   .rupee-stage .glyph-layer {
     font-size: 40px;
+  }
+  .rupee-stage .glyph-3d {
+    margin-left: 128px;
   }
 }
 
