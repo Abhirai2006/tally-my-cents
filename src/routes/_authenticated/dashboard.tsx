@@ -303,7 +303,7 @@ function Dashboard() {
         onClick={openNew}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        className="fixed bottom-6 right-6 z-40 inline-flex items-center gap-2 rounded-full bg-primary px-5 py-3.5 text-sm font-medium text-primary-foreground shadow-lg"
+        className="fixed bottom-6 left-6 z-40 inline-flex items-center gap-2 rounded-full bg-primary px-5 py-3.5 text-sm font-medium text-primary-foreground shadow-lg glow-ring"
       >
         <Plus className="h-4 w-4" />
         Add entry
@@ -314,9 +314,10 @@ function Dashboard() {
         onOpenChange={setDialogOpen}
         editing={editing}
         userId={user.id}
-        defaultDate={start}
+        defaultDate={entryDefaultDate}
         onSaved={() => void refetch()}
       />
+
 
       <Footer />
     </div>
