@@ -230,7 +230,7 @@
   left: -10vw;
   top: -12vw;
   opacity: 0.3;
-  background: radial-gradient(circle at 30% 30%, var(--expense), transparent 70%);
+  background: radial-gradient(circle at 30% 30%, var(--mesh-1), transparent 70%);
   animation: mesh-drift-a 34s ease-in-out infinite;
 }
 
@@ -240,7 +240,7 @@
   right: -8vw;
   top: 4vw;
   opacity: 0.28;
-  background: radial-gradient(circle at 60% 40%, var(--gold), transparent 70%);
+  background: radial-gradient(circle at 60% 40%, var(--mesh-2), transparent 70%);
   animation: mesh-drift-b 42s ease-in-out infinite;
 }
 
@@ -250,7 +250,7 @@
   left: 18vw;
   bottom: -16vw;
   opacity: 0.26;
-  background: radial-gradient(circle at 40% 60%, var(--income), transparent 70%);
+  background: radial-gradient(circle at 40% 60%, var(--mesh-3), transparent 70%);
   animation: mesh-drift-c 38s ease-in-out infinite;
 }
 
@@ -279,8 +279,8 @@
   position: absolute;
   inset: 0;
   background: radial-gradient(
-    420px circle at var(--mx) var(--my),
-    color-mix(in oklab, var(--gold) 22%, transparent),
+    460px circle at var(--mx) var(--my),
+    color-mix(in oklab, var(--mesh-2) 20%, transparent),
     transparent 70%
   );
   transition: background 240ms ease-out;
