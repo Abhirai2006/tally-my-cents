@@ -11,6 +11,7 @@ import { CategoryDonut } from "@/components/CategoryDonut";
 import { TrendChart } from "@/components/TrendChart";
 import { LedgerList } from "@/components/LedgerList";
 import { EntryDialog } from "@/components/EntryDialog";
+import { UserCount } from "@/components/UserCount";
 import { Footer } from "@/components/Footer";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
@@ -53,6 +54,16 @@ function Dashboard() {
     const d = new Date(anchor.getFullYear(), anchor.getMonth() - 5, 1);
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-01`;
   }, [anchor]);
+
+  // Default new entries to today when browsing the current month.
+  const entryDefaultDate = useMemo(() => {
+    const now = new Date();
+    const iso = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(
+      now.getDate(),
+    ).padStart(2, "0")}`;
+    return iso >= start && iso <= end ? iso : start;
+  }, [start, end]);
+
 
   const { data = [], refetch } = useQuery({
     queryKey: ["transactions", user.id, windowStart, end],
@@ -145,6 +156,7 @@ function Dashboard() {
             <span className="truncate text-xs text-muted-foreground">{user.email}</span>
           </div>
           <div className="flex shrink-0 items-center gap-2">
+            <UserCount className="hidden md:inline-flex" />
             <ThemeToggle />
             <Button variant="ghost" size="sm" onClick={signOut} className="gap-1.5">
               <LogOut className="h-4 w-4" />
@@ -303,7 +315,7 @@ function Dashboard() {
         onClick={openNew}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        className="fixed bottom-6 right-6 z-40 inline-flex items-center gap-2 rounded-full bg-primary px-5 py-3.5 text-sm font-medium text-primary-foreground shadow-lg"
+        className="fixed bottom-6 left-6 z-40 inline-flex items-center gap-2 rounded-full bg-primary px-5 py-3.5 text-sm font-medium text-primary-foreground shadow-lg glow-ring"
       >
         <Plus className="h-4 w-4" />
         Add entry
@@ -314,9 +326,10 @@ function Dashboard() {
         onOpenChange={setDialogOpen}
         editing={editing}
         userId={user.id}
-        defaultDate={start}
+        defaultDate={entryDefaultDate}
         onSaved={() => void refetch()}
       />
+
 
       <Footer />
     </div>

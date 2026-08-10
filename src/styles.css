@@ -63,6 +63,13 @@
   --gold: oklch(0.72 0.129 76);
   --rule: oklch(0.83 0.02 85);
 
+  /* Ambient background wash — cool, not the ledger red/yellow/green */
+  --mesh-1: oklch(0.62 0.19 292);
+  --mesh-2: oklch(0.72 0.13 214);
+  --mesh-3: oklch(0.68 0.14 330);
+  --speck-rgb: 124 108 214;
+
+
   --background: var(--paper);
   --foreground: var(--ink);
   --card: oklch(0.985 0.009 88);
@@ -102,6 +109,12 @@
   --income: oklch(0.68 0.12 152);
   --gold: oklch(0.79 0.13 76);
   --rule: oklch(0.34 0.014 80);
+
+  --mesh-1: oklch(0.58 0.2 292);
+  --mesh-2: oklch(0.63 0.15 214);
+  --mesh-3: oklch(0.6 0.16 330);
+  --speck-rgb: 168 156 245;
+
 
   --background: var(--paper);
   --foreground: var(--ink);
@@ -217,7 +230,7 @@
   left: -10vw;
   top: -12vw;
   opacity: 0.3;
-  background: radial-gradient(circle at 30% 30%, var(--expense), transparent 70%);
+  background: radial-gradient(circle at 30% 30%, var(--mesh-1), transparent 70%);
   animation: mesh-drift-a 34s ease-in-out infinite;
 }
 
@@ -227,7 +240,7 @@
   right: -8vw;
   top: 4vw;
   opacity: 0.28;
-  background: radial-gradient(circle at 60% 40%, var(--gold), transparent 70%);
+  background: radial-gradient(circle at 60% 40%, var(--mesh-2), transparent 70%);
   animation: mesh-drift-b 42s ease-in-out infinite;
 }
 
@@ -237,7 +250,7 @@
   left: 18vw;
   bottom: -16vw;
   opacity: 0.26;
-  background: radial-gradient(circle at 40% 60%, var(--income), transparent 70%);
+  background: radial-gradient(circle at 40% 60%, var(--mesh-3), transparent 70%);
   animation: mesh-drift-c 38s ease-in-out infinite;
 }
 
@@ -266,8 +279,8 @@
   position: absolute;
   inset: 0;
   background: radial-gradient(
-    420px circle at var(--mx) var(--my),
-    color-mix(in oklab, var(--gold) 22%, transparent),
+    460px circle at var(--mx) var(--my),
+    color-mix(in oklab, var(--mesh-2) 20%, transparent),
     transparent 70%
   );
   transition: background 240ms ease-out;
@@ -390,3 +403,189 @@
   }
 }
 
+
+/* ── 3D rupee note + glyph ──────────────────────────────────────────── */
+
+@utility rupee-stage {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 240px;
+  max-width: 620px;
+  margin-inline: auto;
+  perspective: 1200px;
+  perspective-origin: 50% 45%;
+}
+
+.rupee-stage .note-3d {
+  position: relative;
+  width: 300px;
+  height: 140px;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.rupee-stage .note-face {
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform-style: flat;
+  border: 1px solid color-mix(in oklab, var(--mesh-1) 45%, transparent);
+  box-shadow:
+    inset 0 0 0 4px color-mix(in oklab, var(--mesh-1) 12%, transparent),
+    0 22px 38px color-mix(in oklab, var(--ink) 22%, transparent);
+  display: grid;
+  place-items: center;
+}
+
+.rupee-stage .note-front {
+  background:
+    radial-gradient(120% 90% at 20% 10%, color-mix(in oklab, var(--mesh-3) 30%, transparent), transparent 60%),
+    linear-gradient(135deg,
+      color-mix(in oklab, var(--mesh-1) 52%, var(--card)),
+      color-mix(in oklab, var(--mesh-2) 46%, var(--card)));
+  transform: translateZ(3px);
+}
+
+.rupee-stage .note-back {
+  background:
+    radial-gradient(120% 90% at 80% 20%, color-mix(in oklab, var(--mesh-2) 28%, transparent), transparent 60%),
+    linear-gradient(135deg,
+      color-mix(in oklab, var(--mesh-3) 48%, var(--card)),
+      color-mix(in oklab, var(--mesh-1) 50%, var(--card)));
+  transform: rotateY(180deg) translateZ(3px);
+}
+
+.rupee-stage .note-edge {
+  position: absolute;
+  top: 0;
+  width: 6px;
+  height: 100%;
+  background: color-mix(in oklab, var(--mesh-1) 55%, var(--card));
+}
+
+.rupee-stage .note-edge-l {
+  left: 0;
+  transform: rotateY(-90deg) translateZ(3px);
+  transform-origin: left center;
+}
+
+.rupee-stage .note-edge-r {
+  right: 0;
+  transform: rotateY(90deg) translateZ(3px);
+  transform-origin: right center;
+}
+
+.rupee-stage .note-glyph {
+  font-family: var(--font-display);
+  font-size: 66px;
+  line-height: 1;
+  color: color-mix(in oklab, var(--ink) 92%, transparent);
+  text-shadow: 0 2px 0 color-mix(in oklab, white 35%, transparent);
+}
+
+.rupee-stage .note-corner {
+  position: absolute;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: color-mix(in oklab, var(--ink) 70%, transparent);
+}
+
+.rupee-stage .note-corner.tl {
+  top: 12px;
+  left: 14px;
+}
+
+.rupee-stage .note-corner.br {
+  bottom: 12px;
+  right: 14px;
+}
+
+.rupee-stage .note-label {
+  position: absolute;
+  bottom: 12px;
+  left: 14px;
+  font-size: 8px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--ink) 55%, transparent);
+}
+
+.rupee-stage .note-strip {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 46px;
+  width: 10px;
+  background: repeating-linear-gradient(
+    180deg,
+    color-mix(in oklab, var(--mesh-2) 70%, transparent) 0 6px,
+    transparent 6px 12px
+  );
+  opacity: 0.75;
+}
+
+.rupee-stage .note-seal {
+  position: absolute;
+  right: 26px;
+  top: 50%;
+  translate: 0 -50%;
+  width: 54px;
+  height: 54px;
+  border-radius: 9999px;
+  border: 2px dashed color-mix(in oklab, var(--ink) 35%, transparent);
+  opacity: 0.7;
+}
+
+.rupee-stage .glyph-3d {
+  position: absolute;
+  left: 50%;
+  margin-left: 180px;
+  top: 22%;
+  width: 64px;
+  height: 64px;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.rupee-stage .glyph-layer {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-display);
+  font-size: 56px;
+  line-height: 1;
+  color: color-mix(in oklab, var(--mesh-1) 80%, transparent);
+}
+
+.rupee-stage .glyph-layer:last-child {
+  color: color-mix(in oklab, var(--mesh-2) 85%, transparent);
+}
+
+@media (max-width: 640px) {
+  .rupee-stage .note-3d {
+    width: 232px;
+    height: 108px;
+  }
+  .rupee-stage .note-glyph {
+    font-size: 50px;
+  }
+  .rupee-stage .glyph-layer {
+    font-size: 40px;
+  }
+  .rupee-stage .glyph-3d {
+    margin-left: 128px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rupee-stage .note-3d,
+  .rupee-stage .glyph-3d {
+    animation: none !important;
+  }
+}

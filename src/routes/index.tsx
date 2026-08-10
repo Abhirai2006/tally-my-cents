@@ -1,9 +1,13 @@
-import { useRef } from "react";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useRef, useState } from "react";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { motion, useMotionValue, useSpring, useScroll, useTransform } from "motion/react";
 import { ArrowRight, NotebookPen, PieChart, RefreshCw, Sparkles } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 import { Footer } from "@/components/Footer";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { UserCount } from "@/components/UserCount";
+import { RupeeNote3D } from "@/components/RupeeNote3D";
+
 import heroVideo from "@/assets/hero-ledger.mp4.asset.json";
 import heroPoster from "@/assets/hero-poster.jpg";
 
@@ -52,10 +56,33 @@ const TICKER = [
 ];
 
 function Landing() {
+  const navigate = useNavigate();
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollY } = useScroll();
   const heroY = useTransform(scrollY, [0, 500], [0, 70]);
   const heroFade = useTransform(scrollY, [0, 420], [1, 0]);
+  const [signedIn, setSignedIn] = useState(false);
+
+  // After Google sign-in the broker lands back here and sets the session —
+  // send the user straight into their ledger instead of making them click again.
+  useEffect(() => {
+    let cancelled = false;
+    void supabase.auth.getSession().then(({ data }) => {
+      if (!cancelled && data.session) setSignedIn(true);
+    });
+    const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
+      if (session) setSignedIn(true);
+      if (event === "SIGNED_IN") navigate({ to: "/dashboard", replace: true });
+      if (event === "SIGNED_OUT") setSignedIn(false);
+    });
+    return () => {
+      cancelled = true;
+      sub.subscription.unsubscribe();
+    };
+  }, [navigate]);
+
+  const ctaTo = signedIn ? "/dashboard" : "/auth";
+
 
   // Pointer-driven 3D tilt on the receipt card
   const px = useMotionValue(0);
@@ -91,11 +118,12 @@ function Landing() {
         <div className="flex items-center gap-2">
           <ThemeToggle />
           <Link
-            to="/auth"
+            to={ctaTo}
             className="rounded-full border border-border px-4 py-1.5 text-sm transition-colors hover:bg-accent"
           >
-            Sign in
+            {signedIn ? "Open ledger" : "Sign in"}
           </Link>
+
         </div>
       </motion.header>
 
@@ -149,19 +177,27 @@ function Landing() {
             transition={{ delay: 0.55, duration: 0.5, ease }}
             className="mt-8 flex flex-wrap items-center gap-4"
           >
-            <Link to="/auth">
+            <Link to={ctaTo}>
               <motion.span
                 whileHover={{ y: -3, scale: 1.03 }}
                 whileTap={{ scale: 0.96 }}
                 className="shine group inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground glow-ring"
               >
-                Start your ledger
+                {signedIn ? "Open your ledger" : "Start your ledger"}
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </motion.span>
             </Link>
             <span className="money text-sm text-muted-foreground">₹ INR · free · private</span>
           </motion.div>
+
+          <div className="mt-7">
+            <UserCount />
+          </div>
         </motion.div>
+
+        {/* Spinning ₹500 note */}
+        <RupeeNote3D />
+
 
         {/* Cinematic film strip + tilting receipt card */}
         <motion.div
