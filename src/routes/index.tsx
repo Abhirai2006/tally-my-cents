@@ -1,9 +1,13 @@
-import { useRef } from "react";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useRef, useState } from "react";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { motion, useMotionValue, useSpring, useScroll, useTransform } from "motion/react";
 import { ArrowRight, NotebookPen, PieChart, RefreshCw, Sparkles } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 import { Footer } from "@/components/Footer";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { UserCount } from "@/components/UserCount";
+import { RupeeNote3D } from "@/components/RupeeNote3D";
+
 import heroVideo from "@/assets/hero-ledger.mp4.asset.json";
 import heroPoster from "@/assets/hero-poster.jpg";
 
