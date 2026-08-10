@@ -56,10 +56,33 @@ const TICKER = [
 ];
 
 function Landing() {
+  const navigate = useNavigate();
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollY } = useScroll();
   const heroY = useTransform(scrollY, [0, 500], [0, 70]);
   const heroFade = useTransform(scrollY, [0, 420], [1, 0]);
+  const [signedIn, setSignedIn] = useState(false);
+
+  // After Google sign-in the broker lands back here and sets the session —
+  // send the user straight into their ledger instead of making them click again.
+  useEffect(() => {
+    let cancelled = false;
+    void supabase.auth.getSession().then(({ data }) => {
+      if (!cancelled && data.session) setSignedIn(true);
+    });
+    const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
+      if (session) setSignedIn(true);
+      if (event === "SIGNED_IN") navigate({ to: "/dashboard", replace: true });
+      if (event === "SIGNED_OUT") setSignedIn(false);
+    });
+    return () => {
+      cancelled = true;
+      sub.subscription.unsubscribe();
+    };
+  }, [navigate]);
+
+  const ctaTo = signedIn ? "/dashboard" : "/auth";
+
 
   // Pointer-driven 3D tilt on the receipt card
   const px = useMotionValue(0);
