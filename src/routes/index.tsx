@@ -177,19 +177,27 @@ function Landing() {
             transition={{ delay: 0.55, duration: 0.5, ease }}
             className="mt-8 flex flex-wrap items-center gap-4"
           >
-            <Link to="/auth">
+            <Link to={ctaTo}>
               <motion.span
                 whileHover={{ y: -3, scale: 1.03 }}
                 whileTap={{ scale: 0.96 }}
                 className="shine group inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground glow-ring"
               >
-                Start your ledger
+                {signedIn ? "Open your ledger" : "Start your ledger"}
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </motion.span>
             </Link>
             <span className="money text-sm text-muted-foreground">₹ INR · free · private</span>
           </motion.div>
+
+          <div className="mt-7">
+            <UserCount />
+          </div>
         </motion.div>
+
+        {/* Spinning ₹500 note */}
+        <RupeeNote3D />
+
 
         {/* Cinematic film strip + tilting receipt card */}
         <motion.div
