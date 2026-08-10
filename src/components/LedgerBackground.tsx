@@ -54,13 +54,22 @@ export function LedgerBackground() {
     resize();
     window.addEventListener("resize", resize);
 
-    const speckTint = () =>
-      getComputedStyle(document.documentElement).getPropertyValue("--speck-rgb").trim() ||
-      "124 108 214";
+    const readTint = () =>
+      (
+        getComputedStyle(document.documentElement).getPropertyValue("--speck-rgb").trim() ||
+        "124 108 214"
+      ).replace(/\s+/g, ", ");
+
+    let tint = readTint();
+    let tintCheckedAt = 0;
 
     const tick = (t: number) => {
       ctx.clearRect(0, 0, w, h);
-      const tint = speckTint().replace(/\s+/g, ", ");
+      if (t - tintCheckedAt > 800) {
+        tint = readTint();
+        tintCheckedAt = t;
+      }
+
       for (const sp of specs) {
         sp.y -= sp.s;
         sp.x += Math.sin(t / 2600 + sp.p) * 0.22;
