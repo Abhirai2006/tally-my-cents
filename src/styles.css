@@ -410,7 +410,9 @@
   position: relative;
   display: grid;
   place-items: center;
-  min-height: 260px;
+  min-height: 240px;
+  max-width: 620px;
+  margin-inline: auto;
   perspective: 1200px;
   perspective-origin: 50% 45%;
 }
@@ -539,8 +541,10 @@
 
 .rupee-stage .glyph-3d {
   position: absolute;
-  right: 4%;
-  top: 6%;
+  right: 8%;
+  top: 12%;
+  width: 60px;
+  height: 60px;
   transform-style: preserve-3d;
   will-change: transform;
 }
@@ -548,6 +552,8 @@
 .rupee-stage .glyph-layer {
   position: absolute;
   inset: 0;
+  display: grid;
+  place-items: center;
   font-family: var(--font-display);
   font-size: 56px;
   line-height: 1;
