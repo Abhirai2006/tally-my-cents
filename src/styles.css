@@ -63,6 +63,13 @@
   --gold: oklch(0.72 0.129 76);
   --rule: oklch(0.83 0.02 85);
 
+  /* Ambient background wash — cool, not the ledger red/yellow/green */
+  --mesh-1: oklch(0.62 0.19 292);
+  --mesh-2: oklch(0.72 0.13 214);
+  --mesh-3: oklch(0.68 0.14 330);
+  --speck-rgb: 124 108 214;
+
+
   --background: var(--paper);
   --foreground: var(--ink);
   --card: oklch(0.985 0.009 88);
