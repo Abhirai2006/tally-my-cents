@@ -430,7 +430,8 @@
   inset: 0;
   border-radius: 10px;
   backface-visibility: hidden;
-  overflow: hidden;
+  -webkit-backface-visibility: hidden;
+  transform-style: flat;
   border: 1px solid color-mix(in oklab, var(--mesh-1) 45%, transparent);
   box-shadow:
     inset 0 0 0 4px color-mix(in oklab, var(--mesh-1) 12%, transparent),
