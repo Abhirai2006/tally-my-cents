@@ -54,6 +54,16 @@ function Dashboard() {
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-01`;
   }, [anchor]);
 
+  // Default new entries to today when browsing the current month.
+  const entryDefaultDate = useMemo(() => {
+    const now = new Date();
+    const iso = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(
+      now.getDate(),
+    ).padStart(2, "0")}`;
+    return iso >= start && iso <= end ? iso : start;
+  }, [start, end]);
+
+
   const { data = [], refetch } = useQuery({
     queryKey: ["transactions", user.id, windowStart, end],
     queryFn: async () => {
