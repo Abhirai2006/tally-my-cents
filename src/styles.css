@@ -110,6 +110,12 @@
   --gold: oklch(0.79 0.13 76);
   --rule: oklch(0.34 0.014 80);
 
+  --mesh-1: oklch(0.58 0.2 292);
+  --mesh-2: oklch(0.63 0.15 214);
+  --mesh-3: oklch(0.6 0.16 330);
+  --speck-rgb: 168 156 245;
+
+
   --background: var(--paper);
   --foreground: var(--ink);
   --card: oklch(0.23 0.015 80);
