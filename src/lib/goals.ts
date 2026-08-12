@@ -19,7 +19,7 @@ export const GOAL_ACCENTS: Record<string, string> = {
 };
 
 export function goalAccent(key: string) {
-  return GOAL_ACCENTS[key] ?? GOAL_ACCENTS.moss!;
+  return GOAL_ACCENTS[key] ?? "var(--chart-1)";
 }
 
 export function goalProgress(g: Goal) {
