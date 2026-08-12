@@ -41,6 +41,33 @@ export type Database = {
         }
         Relationships: []
       }
+      ledger_shares: {
+        Row: {
+          created_at: string
+          id: string
+          label: string | null
+          member_email: string
+          owner_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          label?: string | null
+          member_email: string
+          owner_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          label?: string | null
+          member_email?: string
+          owner_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       recurring_entries: {
         Row: {
           active: boolean
@@ -78,6 +105,42 @@ export type Database = {
           last_posted_month?: string | null
           note?: string | null
           type?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      savings_goals: {
+        Row: {
+          accent: string
+          created_at: string
+          deadline: string | null
+          id: string
+          name: string
+          saved_amount: number
+          target_amount: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          accent?: string
+          created_at?: string
+          deadline?: string | null
+          id?: string
+          name: string
+          saved_amount?: number
+          target_amount: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          accent?: string
+          created_at?: string
+          deadline?: string | null
+          id?: string
+          name?: string
+          saved_amount?: number
+          target_amount?: number
           updated_at?: string
           user_id?: string
         }
@@ -127,6 +190,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      can_view_ledger: { Args: { _owner_id: string }; Returns: boolean }
       tally_user_count: { Args: never; Returns: number }
     }
     Enums: {
