@@ -20,6 +20,11 @@ import { BudgetSection } from "@/components/BudgetSection";
 import { StreakCard } from "@/components/StreakCard";
 import { RecurringSection } from "@/components/RecurringSection";
 import { postDueRecurring, type Recurring } from "@/lib/recurring";
+import { GoalsSection } from "@/components/GoalsSection";
+import { ShareSection } from "@/components/ShareSection";
+import { InsightsCard } from "@/components/InsightsCard";
+import { ReceiptScan } from "@/components/ReceiptScan";
+import { CommandPalette } from "@/components/CommandPalette";
 import { monthKey, monthLabel, monthRange, toCsv, type Txn } from "@/lib/tally";
 
 
@@ -47,6 +52,7 @@ function Dashboard() {
   const [anchor, setAnchor] = useState(() => new Date());
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editing, setEditing] = useState<Txn | null>(null);
+  const [paletteOpen, setPaletteOpen] = useState(false);
 
   const label = monthLabel(anchor);
   const { start, end } = monthRange(anchor);
@@ -110,6 +116,52 @@ function Dashboard() {
     }
     return { spent, earned, net: earned - spent };
   }, [monthTxns]);
+
+  const insightCategories = useMemo(() => {
+    const map = new Map<string, number>();
+    for (const t of monthTxns) {
+      if (t.type === "expense") map.set(t.category, (map.get(t.category) ?? 0) + Number(t.amount));
+    }
+    return [...map.entries()]
+      .map(([name, amount]) => ({ name, amount }))
+      .sort((a, b) => b.amount - a.amount);
+  }, [monthTxns]);
+
+  const previousMonths = useMemo(() => {
+    const map = new Map<string, { spent: number; earned: number }>();
+    for (const t of data) {
+      const key = t.occurred_on.slice(0, 7);
+      const row = map.get(key) ?? { spent: 0, earned: 0 };
+      if (t.type === "expense") row.spent += Number(t.amount);
+      else row.earned += Number(t.amount);
+      map.set(key, row);
+    }
+    return [...map.entries()]
+      .filter(([key]) => key !== monthKey(anchor))
+      .map(([month, v]) => ({ month, ...v }));
+  }, [data, anchor]);
+
+  const saveScanned = async (e: {
+    amount: number;
+    category: string;
+    occurred_on?: string | null | undefined;
+    note?: string | undefined;
+  }) => {
+    const { error } = await supabase.from("transactions").insert({
+      user_id: user.id,
+      amount: e.amount,
+      type: "expense",
+      category: e.category,
+      occurred_on: e.occurred_on || entryDefaultDate,
+      note: e.note ?? null,
+    });
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    toast.success("Receipt logged");
+    void refetch();
+  };
 
   // Post any recurring entries that are due this month, once per session.
   useEffect(() => {
@@ -201,6 +253,7 @@ function Dashboard() {
               <Download className="h-4 w-4" />
               <span className="hidden sm:inline">Export CSV</span>
             </Button>
+            <ReceiptScan onScanned={(e) => void saveScanned(e)} />
           </div>
         </div>
 
@@ -282,8 +335,20 @@ function Dashboard() {
           />
         </div>
 
-        <div className="mt-4">
+        <div className="mt-4 grid gap-4 lg:grid-cols-2">
+          <InsightsCard
+            month={label}
+            spent={totals.spent}
+            earned={totals.earned}
+            categories={insightCategories}
+            previousMonths={previousMonths}
+          />
+          <GoalsSection userId={user.id} />
+        </div>
+
+        <div className="mt-4 grid gap-4 lg:grid-cols-2">
           <RecurringSection userId={user.id} />
+          <ShareSection userId={user.id} userEmail={user.email ?? ""} start={start} end={end} />
         </div>
 
 
@@ -320,6 +385,14 @@ function Dashboard() {
         <Plus className="h-4 w-4" />
         Add entry
       </motion.button>
+
+      <CommandPalette
+        open={paletteOpen}
+        onOpenChange={setPaletteOpen}
+        onAddEntry={openNew}
+        onShiftMonth={shift}
+        onExport={() => toCsv(monthTxns, label)}
+      />
 
       <EntryDialog
         open={dialogOpen}
