@@ -103,36 +103,38 @@
 
 .dark {
   color-scheme: dark;
-  --paper: oklch(0.19 0.014 80);
-  --paper-deep: oklch(0.24 0.016 80);
-  --ink: oklch(0.94 0.012 88);
-  --expense: oklch(0.65 0.15 27);
-  --income: oklch(0.68 0.12 152);
-  --gold: oklch(0.79 0.13 76);
-  --rule: oklch(0.34 0.014 80);
+  --paper: oklch(0.185 0.021 214);
+  --paper-deep: oklch(0.235 0.024 214);
+  --ink: oklch(0.945 0.010 96);
+  --expense: oklch(0.685 0.155 34);
+  --income: oklch(0.715 0.105 178);
+  --gold: oklch(0.80 0.115 66);
+  --rule: oklch(0.325 0.024 214);
 
-  --mesh-1: oklch(0.58 0.2 292);
-  --mesh-2: oklch(0.63 0.15 214);
-  --mesh-3: oklch(0.6 0.16 330);
-  --speck-rgb: 168 156 245;
+  --mesh-1: oklch(0.62 0.125 196);
+  --mesh-2: oklch(0.70 0.125 62);
+  --mesh-3: oklch(0.56 0.125 268);
+  --speck-rgb: 226 182 128;
 
 
   --background: var(--paper);
   --foreground: var(--ink);
-  --card: oklch(0.23 0.015 80);
+  --card: oklch(0.225 0.022 214);
   --card-foreground: var(--ink);
-  --popover: oklch(0.23 0.015 80);
+  --popover: oklch(0.225 0.022 214);
   --popover-foreground: var(--ink);
-  --primary: oklch(0.94 0.012 88);
-  --primary-foreground: oklch(0.2 0.014 80);
+  --primary: oklch(0.80 0.098 192);
+  --primary-foreground: oklch(0.19 0.022 214);
   --secondary: var(--paper-deep);
   --secondary-foreground: var(--ink);
   --muted: var(--paper-deep);
-  --muted-foreground: oklch(0.68 0.02 82);
-  --accent: oklch(0.3 0.03 82);
+  --muted-foreground: oklch(0.70 0.022 210);
+  --accent: oklch(0.30 0.035 210);
   --accent-foreground: var(--ink);
   --border: var(--rule);
   --input: var(--rule);
+  --ring: oklch(0.70 0.10 196);
+
 }
 
 @layer base {
