@@ -8,8 +8,8 @@ import { Button } from "@/components/ui/button";
 export type ScannedEntry = {
   amount: number;
   category: string;
-  occurred_on?: string | null;
-  note?: string;
+  occurred_on?: string | null | undefined;
+  note?: string | undefined;
 };
 
 /** Reads a photographed bill and hands the parsed entry back for confirmation. */
