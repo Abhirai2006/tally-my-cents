@@ -55,83 +55,86 @@
   color-scheme: light;
   --radius: 0.5rem;
 
-  --paper: oklch(0.965 0.014 88);
-  --paper-deep: oklch(0.935 0.021 85);
-  --ink: oklch(0.22 0.031 258);
-  --expense: oklch(0.505 0.145 27);
-  --income: oklch(0.455 0.093 152);
-  --gold: oklch(0.72 0.129 76);
-  --rule: oklch(0.83 0.02 85);
+  --paper: oklch(0.973 0.009 96);
+  --paper-deep: oklch(0.941 0.014 96);
+  --ink: oklch(0.235 0.036 205);
+  --expense: oklch(0.585 0.166 32);
+  --income: oklch(0.545 0.105 178);
+  --gold: oklch(0.705 0.122 62);
+  --rule: oklch(0.867 0.014 96);
 
-  /* Ambient background wash — cool, not the ledger red/yellow/green */
-  --mesh-1: oklch(0.62 0.19 292);
-  --mesh-2: oklch(0.72 0.13 214);
-  --mesh-3: oklch(0.68 0.14 330);
-  --speck-rgb: 124 108 214;
+  /* Ambient wash — petrol teal, copper, dusk indigo */
+  --mesh-1: oklch(0.70 0.115 196);
+  --mesh-2: oklch(0.78 0.115 62);
+  --mesh-3: oklch(0.63 0.105 268);
+  --speck-rgb: 198 156 106;
 
 
   --background: var(--paper);
   --foreground: var(--ink);
-  --card: oklch(0.985 0.009 88);
+  --card: oklch(0.988 0.006 96);
   --card-foreground: var(--ink);
-  --popover: oklch(0.985 0.009 88);
+  --popover: oklch(0.988 0.006 96);
   --popover-foreground: var(--ink);
-  --primary: var(--ink);
-  --primary-foreground: oklch(0.98 0.01 88);
+  --primary: oklch(0.42 0.086 202);
+  --primary-foreground: oklch(0.985 0.008 96);
   --secondary: var(--paper-deep);
   --secondary-foreground: var(--ink);
   --muted: var(--paper-deep);
-  --muted-foreground: oklch(0.5 0.024 80);
-  --accent: oklch(0.9 0.038 82);
+  --muted-foreground: oklch(0.515 0.024 210);
+  --accent: oklch(0.915 0.031 84);
   --accent-foreground: var(--ink);
   --destructive: var(--expense);
-  --destructive-foreground: oklch(0.98 0.01 88);
+  --destructive-foreground: oklch(0.985 0.008 96);
   --border: var(--rule);
   --input: var(--rule);
-  --ring: var(--gold);
+  --ring: oklch(0.62 0.105 196);
 
-  --chart-1: oklch(0.505 0.145 27);
-  --chart-2: oklch(0.72 0.129 76);
-  --chart-3: oklch(0.455 0.093 152);
-  --chart-4: oklch(0.45 0.09 250);
-  --chart-5: oklch(0.62 0.12 320);
-  --chart-6: oklch(0.6 0.11 200);
-  --chart-7: oklch(0.55 0.13 50);
-  --chart-8: oklch(0.42 0.05 285);
+  --chart-1: oklch(0.52 0.105 196);
+  --chart-2: oklch(0.70 0.122 62);
+  --chart-3: oklch(0.545 0.105 178);
+  --chart-4: oklch(0.585 0.166 32);
+  --chart-5: oklch(0.55 0.10 268);
+  --chart-6: oklch(0.63 0.09 148);
+  --chart-7: oklch(0.60 0.13 350);
+  --chart-8: oklch(0.44 0.045 220);
+
 }
 
 .dark {
   color-scheme: dark;
-  --paper: oklch(0.19 0.014 80);
-  --paper-deep: oklch(0.24 0.016 80);
-  --ink: oklch(0.94 0.012 88);
-  --expense: oklch(0.65 0.15 27);
-  --income: oklch(0.68 0.12 152);
-  --gold: oklch(0.79 0.13 76);
-  --rule: oklch(0.34 0.014 80);
+  --paper: oklch(0.185 0.021 214);
+  --paper-deep: oklch(0.235 0.024 214);
+  --ink: oklch(0.945 0.010 96);
+  --expense: oklch(0.685 0.155 34);
+  --income: oklch(0.715 0.105 178);
+  --gold: oklch(0.80 0.115 66);
+  --rule: oklch(0.325 0.024 214);
 
-  --mesh-1: oklch(0.58 0.2 292);
-  --mesh-2: oklch(0.63 0.15 214);
-  --mesh-3: oklch(0.6 0.16 330);
-  --speck-rgb: 168 156 245;
+  --mesh-1: oklch(0.62 0.125 196);
+  --mesh-2: oklch(0.70 0.125 62);
+  --mesh-3: oklch(0.56 0.125 268);
+  --speck-rgb: 226 182 128;
 
 
   --background: var(--paper);
   --foreground: var(--ink);
-  --card: oklch(0.23 0.015 80);
+  --card: oklch(0.225 0.022 214);
   --card-foreground: var(--ink);
-  --popover: oklch(0.23 0.015 80);
+  --popover: oklch(0.225 0.022 214);
   --popover-foreground: var(--ink);
-  --primary: oklch(0.94 0.012 88);
-  --primary-foreground: oklch(0.2 0.014 80);
+  --primary: oklch(0.80 0.098 192);
+  --primary-foreground: oklch(0.19 0.022 214);
   --secondary: var(--paper-deep);
   --secondary-foreground: var(--ink);
   --muted: var(--paper-deep);
-  --muted-foreground: oklch(0.68 0.02 82);
-  --accent: oklch(0.3 0.03 82);
+  --muted-foreground: oklch(0.70 0.022 210);
+  --accent: oklch(0.30 0.035 210);
   --accent-foreground: var(--ink);
   --border: var(--rule);
   --input: var(--rule);
+  --ring: oklch(0.70 0.10 196);
+
 }
 
 @layer base {
@@ -404,150 +407,72 @@
 }
 
 
-/* ── 3D rupee note + glyph ──────────────────────────────────────────── */
+/* ── 3D rupee glyph ─────────────────────────────────────────────────── */
 
 @utility rupee-stage {
   position: relative;
   display: grid;
   place-items: center;
-  min-height: 240px;
+  min-height: 300px;
   max-width: 620px;
   margin-inline: auto;
-  perspective: 1200px;
-  perspective-origin: 50% 45%;
+  perspective: 1000px;
+  perspective-origin: 50% 42%;
 }
 
-.rupee-stage .note-3d {
-  position: relative;
-  width: 300px;
-  height: 140px;
-  transform-style: preserve-3d;
-  will-change: transform;
-}
-
-.rupee-stage .note-face {
+.rupee-stage .halo {
   position: absolute;
-  inset: 0;
-  border-radius: 10px;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  transform-style: flat;
-  border: 1px solid color-mix(in oklab, var(--mesh-1) 45%, transparent);
-  box-shadow:
-    inset 0 0 0 4px color-mix(in oklab, var(--mesh-1) 12%, transparent),
-    0 22px 38px color-mix(in oklab, var(--ink) 22%, transparent);
-  display: grid;
-  place-items: center;
-}
-
-.rupee-stage .note-front {
-  background:
-    radial-gradient(120% 90% at 20% 10%, color-mix(in oklab, var(--mesh-3) 30%, transparent), transparent 60%),
-    linear-gradient(135deg,
-      color-mix(in oklab, var(--mesh-1) 52%, var(--card)),
-      color-mix(in oklab, var(--mesh-2) 46%, var(--card)));
-  transform: translateZ(3px);
-}
-
-.rupee-stage .note-back {
-  background:
-    radial-gradient(120% 90% at 80% 20%, color-mix(in oklab, var(--mesh-2) 28%, transparent), transparent 60%),
-    linear-gradient(135deg,
-      color-mix(in oklab, var(--mesh-3) 48%, var(--card)),
-      color-mix(in oklab, var(--mesh-1) 50%, var(--card)));
-  transform: rotateY(180deg) translateZ(3px);
-}
-
-.rupee-stage .note-edge {
-  position: absolute;
-  top: 0;
-  width: 6px;
-  height: 100%;
-  background: color-mix(in oklab, var(--mesh-1) 55%, var(--card));
-}
-
-.rupee-stage .note-edge-l {
-  left: 0;
-  transform: rotateY(-90deg) translateZ(3px);
-  transform-origin: left center;
-}
-
-.rupee-stage .note-edge-r {
-  right: 0;
-  transform: rotateY(90deg) translateZ(3px);
-  transform-origin: right center;
-}
-
-.rupee-stage .note-glyph {
-  font-family: var(--font-display);
-  font-size: 66px;
-  line-height: 1;
-  color: color-mix(in oklab, var(--ink) 92%, transparent);
-  text-shadow: 0 2px 0 color-mix(in oklab, white 35%, transparent);
-}
-
-.rupee-stage .note-corner {
-  position: absolute;
-  font-family: var(--font-mono);
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  color: color-mix(in oklab, var(--ink) 70%, transparent);
-}
-
-.rupee-stage .note-corner.tl {
-  top: 12px;
-  left: 14px;
-}
-
-.rupee-stage .note-corner.br {
-  bottom: 12px;
-  right: 14px;
-}
-
-.rupee-stage .note-label {
-  position: absolute;
-  bottom: 12px;
-  left: 14px;
-  font-size: 8px;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  color: color-mix(in oklab, var(--ink) 55%, transparent);
-}
-
-.rupee-stage .note-strip {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 46px;
-  width: 10px;
-  background: repeating-linear-gradient(
-    180deg,
-    color-mix(in oklab, var(--mesh-2) 70%, transparent) 0 6px,
-    transparent 6px 12px
-  );
-  opacity: 0.75;
-}
-
-.rupee-stage .note-seal {
-  position: absolute;
-  right: 26px;
-  top: 50%;
-  translate: 0 -50%;
-  width: 54px;
-  height: 54px;
+  width: 260px;
+  height: 260px;
   border-radius: 9999px;
-  border: 2px dashed color-mix(in oklab, var(--ink) 35%, transparent);
-  opacity: 0.7;
+  background: radial-gradient(
+    circle at 50% 45%,
+    color-mix(in oklab, var(--mesh-1) 38%, transparent),
+    transparent 62%
+  );
+  filter: blur(6px);
+}
+
+.rupee-stage .orbit {
+  position: absolute;
+  border-radius: 9999px;
+  border: 1px solid color-mix(in oklab, var(--mesh-1) 45%, transparent);
+  transform-style: preserve-3d;
+}
+
+.rupee-stage .orbit-a {
+  width: 250px;
+  height: 250px;
+  border-style: dashed;
+}
+
+.rupee-stage .orbit-b {
+  width: 196px;
+  height: 196px;
+  border-color: color-mix(in oklab, var(--mesh-2) 50%, transparent);
+}
+
+.rupee-stage .orbit-c {
+  width: 300px;
+  height: 300px;
+  border-color: color-mix(in oklab, var(--mesh-3) 32%, transparent);
+}
+
+.rupee-stage .orbit-dot {
+  position: absolute;
+  top: -3px;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: var(--mesh-2);
+  box-shadow: 0 0 12px color-mix(in oklab, var(--mesh-2) 80%, transparent);
 }
 
 .rupee-stage .glyph-3d {
-  position: absolute;
-  left: 50%;
-  margin-left: 180px;
-  top: 22%;
-  width: 64px;
-  height: 64px;
+  position: relative;
+  width: 180px;
+  height: 180px;
   transform-style: preserve-3d;
   will-change: transform;
 }
@@ -558,34 +483,95 @@
   display: grid;
   place-items: center;
   font-family: var(--font-display);
-  font-size: 56px;
+  font-weight: 700;
+  font-size: 150px;
   line-height: 1;
-  color: color-mix(in oklab, var(--mesh-1) 80%, transparent);
+  color: color-mix(in oklab, var(--mesh-1) 62%, var(--ink));
+  backface-visibility: hidden;
 }
 
-.rupee-stage .glyph-layer:last-child {
-  color: color-mix(in oklab, var(--mesh-2) 85%, transparent);
+.rupee-stage .glyph-layer.face-front {
+  color: transparent;
+  background: linear-gradient(
+    150deg,
+    color-mix(in oklab, var(--mesh-2) 85%, white),
+    var(--mesh-1) 45%,
+    color-mix(in oklab, var(--mesh-3) 80%, var(--ink))
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  text-shadow: none;
+}
+
+.rupee-stage .glyph-layer.face-back {
+  color: color-mix(in oklab, var(--mesh-3) 55%, var(--ink));
+}
+
+.rupee-stage .plinth {
+  position: absolute;
+  bottom: 22px;
+  width: 210px;
+  height: 46px;
+  border-radius: 9999px;
+  background: radial-gradient(
+    ellipse at 50% 50%,
+    color-mix(in oklab, var(--ink) 26%, transparent),
+    transparent 70%
+  );
+  filter: blur(8px);
+}
+
+.rupee-stage .tick {
+  position: absolute;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--ink) 45%, transparent);
+}
+
+.rupee-stage .tick-l {
+  left: 4%;
+  top: 32%;
+}
+
+.rupee-stage .tick-r {
+  right: 4%;
+  bottom: 26%;
 }
 
 @media (max-width: 640px) {
-  .rupee-stage .note-3d {
-    width: 232px;
-    height: 108px;
-  }
-  .rupee-stage .note-glyph {
-    font-size: 50px;
-  }
-  .rupee-stage .glyph-layer {
-    font-size: 40px;
+  .rupee-stage {
+    min-height: 240px;
   }
   .rupee-stage .glyph-3d {
-    margin-left: 128px;
+    width: 130px;
+    height: 130px;
+  }
+  .rupee-stage .glyph-layer {
+    font-size: 108px;
+  }
+  .rupee-stage .orbit-a {
+    width: 190px;
+    height: 190px;
+  }
+  .rupee-stage .orbit-b {
+    width: 150px;
+    height: 150px;
+  }
+  .rupee-stage .orbit-c {
+    width: 226px;
+    height: 226px;
+  }
+  .rupee-stage .tick {
+    display: none;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .rupee-stage .note-3d,
-  .rupee-stage .glyph-3d {
+  .rupee-stage .glyph-3d,
+  .rupee-stage .orbit {
     animation: none !important;
   }
 }
+

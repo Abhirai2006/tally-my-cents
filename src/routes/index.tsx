@@ -6,7 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Footer } from "@/components/Footer";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { UserCount } from "@/components/UserCount";
-import { RupeeNote3D } from "@/components/RupeeNote3D";
+import { Rupee3D } from "@/components/Rupee3D";
 
 import heroVideo from "@/assets/hero-ledger.mp4.asset.json";
 import heroPoster from "@/assets/hero-poster.jpg";
@@ -195,8 +195,8 @@ function Landing() {
           </div>
         </motion.div>
 
-        {/* Spinning ₹500 note */}
-        <RupeeNote3D />
+        {/* Spinning 3D rupee */}
+        <Rupee3D />
 
 
         {/* Cinematic film strip + tilting receipt card */}
