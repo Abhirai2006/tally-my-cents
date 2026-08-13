@@ -1,0 +1,1 @@
+REVOKE EXECUTE ON FUNCTION public.preview_ledger_invite(text) FROM anon;
