@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { motion, AnimatePresence } from "motion/react";
 import { toast } from "sonner";
@@ -39,7 +39,7 @@ function AuthPage() {
       navigate({ to: "/invite/$token", params: { token }, replace: true });
       return;
     }
-    goNext();
+    navigate({ to: "/dashboard", replace: true });
   }, [navigate]);
   const [mode, setMode] = useState<Mode>("signin");
   const [email, setEmail] = useState("");
