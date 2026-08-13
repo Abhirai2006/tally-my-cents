@@ -24,6 +24,7 @@ export function EntryDialog({
   editing,
   userId,
   defaultDate,
+  ledgerId,
   onSaved,
 }: {
   open: boolean;
@@ -31,6 +32,7 @@ export function EntryDialog({
   editing: Txn | null;
   userId: string;
   defaultDate?: string;
+  ledgerId: string | null;
   onSaved: () => void;
 }) {
   const [type, setType] = useState<EntryType>("expense");
@@ -71,6 +73,7 @@ export function EntryDialog({
     setBusy(true);
     const payload = {
       user_id: userId,
+      ledger_id: ledgerId,
       amount: value,
       type,
       category,

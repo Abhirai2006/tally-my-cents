@@ -10,7 +10,15 @@ import { Button } from "@/components/ui/button";
 
 const EXAMPLES = ["chai 40", "groceries 1250", "+salary 68000", "netflix 199"];
 
-export function QuickAdd({ userId, onSaved }: { userId: string; onSaved: () => void }) {
+export function QuickAdd({
+  userId,
+  ledgerId,
+  onSaved,
+}: {
+  userId: string;
+  ledgerId: string | null;
+  onSaved: () => void;
+}) {
   const [value, setValue] = useState("");
   const [busy, setBusy] = useState(false);
   const parsed = parseQuickEntry(value);
@@ -24,6 +32,7 @@ export function QuickAdd({ userId, onSaved }: { userId: string; onSaved: () => v
     setBusy(true);
     const { error } = await supabase.from("transactions").insert({
       user_id: userId,
+      ledger_id: ledgerId,
       amount: parsed.amount,
       type: parsed.type,
       category: parsed.category,
