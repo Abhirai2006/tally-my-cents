@@ -4,6 +4,13 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { motion } from "motion/react";
 import { toast } from "sonner";
 import { CalendarRange, ChevronLeft, ChevronRight, Download, LogOut, Plus } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 import { supabase } from "@/integrations/supabase/client";
 import { CountUp } from "@/components/CountUp";
@@ -19,9 +26,11 @@ import { QuickAdd } from "@/components/QuickAdd";
 import { BudgetSection } from "@/components/BudgetSection";
 import { StreakCard } from "@/components/StreakCard";
 import { RecurringSection } from "@/components/RecurringSection";
-import { postDueRecurring, type Recurring } from "@/lib/recurring";
+import { RemindersCard } from "@/components/RemindersCard";
+import { type Recurring } from "@/lib/recurring";
 import { GoalsSection } from "@/components/GoalsSection";
-import { ShareSection } from "@/components/ShareSection";
+import { LedgerPanel } from "@/components/LedgerPanel";
+import { useLedgers, pendingInvite } from "@/lib/ledgers";
 import { InsightsCard } from "@/components/InsightsCard";
 import { ReceiptScan } from "@/components/ReceiptScan";
 import { CommandPalette } from "@/components/CommandPalette";
@@ -53,6 +62,13 @@ function Dashboard() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editing, setEditing] = useState<Txn | null>(null);
   const [paletteOpen, setPaletteOpen] = useState(false);
+  const { ledgers, active: activeLedger, activeId, isOwner, select, refresh: refreshLedgers } =
+    useLedgers(user.id);
+
+  // An invite that was opened but never accepted shouldn't hijack later sign-ins.
+  useEffect(() => {
+    pendingInvite.clear();
+  }, []);
 
   const label = monthLabel(anchor);
   const { start, end } = monthRange(anchor);
@@ -72,11 +88,13 @@ function Dashboard() {
 
 
   const { data = [], refetch } = useQuery({
-    queryKey: ["transactions", user.id, windowStart, end],
+    queryKey: ["transactions", user.id, activeId, windowStart, end],
+    enabled: !!activeId,
     queryFn: async () => {
       const { data, error } = await supabase
         .from("transactions")
         .select("*")
+        .eq("ledger_id", activeId!)
         .gte("occurred_on", windowStart)
         .lte("occurred_on", end)
         .order("occurred_on", { ascending: false })
@@ -101,6 +119,15 @@ function Dashboard() {
       supabase.removeChannel(channel);
     };
   }, [queryClient]);
+
+  const { data: recurringRows = [] } = useQuery({
+    queryKey: ["recurring", user.id],
+    queryFn: async () => {
+      const { data, error } = await supabase.from("recurring_entries").select("*").order("due_day");
+      if (error) throw error;
+      return (data ?? []) as Recurring[];
+    },
+  });
 
   const monthTxns = useMemo(
     () => data.filter((t) => t.occurred_on >= start && t.occurred_on <= end),
@@ -149,6 +176,7 @@ function Dashboard() {
   }) => {
     const { error } = await supabase.from("transactions").insert({
       user_id: user.id,
+      ledger_id: activeId,
       amount: e.amount,
       type: "expense",
       category: e.category,
@@ -162,24 +190,6 @@ function Dashboard() {
     toast.success("Receipt logged");
     void refetch();
   };
-
-  // Post any recurring entries that are due this month, once per session.
-  useEffect(() => {
-    let cancelled = false;
-    void (async () => {
-      const { data: rows, error } = await supabase.from("recurring_entries").select("*");
-      if (error || cancelled || !rows?.length) return;
-      const posted = await postDueRecurring(rows as Recurring[], user.id).catch(() => 0);
-      if (posted > 0 && !cancelled) {
-        toast.success(`${posted} recurring ${posted === 1 ? "entry" : "entries"} logged for this month.`);
-        queryClient.invalidateQueries({ queryKey: ["transactions"] });
-        queryClient.invalidateQueries({ queryKey: ["recurring", user.id] });
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, [user.id, queryClient]);
 
   const shift = useCallback((delta: number) => {
     setAnchor((d) => new Date(d.getFullYear(), d.getMonth() + delta, 1));
@@ -208,6 +218,21 @@ function Dashboard() {
             <span className="truncate text-xs text-muted-foreground">{user.email}</span>
           </div>
           <div className="flex shrink-0 items-center gap-2">
+            {ledgers.length > 1 && activeId ? (
+              <Select value={activeId} onValueChange={select}>
+                <SelectTrigger className="h-8 w-[9.5rem] text-xs" aria-label="Switch ledger">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {ledgers.map((l) => (
+                    <SelectItem key={l.id} value={l.id}>
+                      {l.name}
+                      {l.owner_id === user.id ? "" : " · shared"}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            ) : null}
             <UserCount className="hidden md:inline-flex" />
             <ThemeToggle />
             <Button variant="ghost" size="sm" onClick={signOut} className="gap-1.5">
@@ -258,10 +283,19 @@ function Dashboard() {
         </div>
 
         <div className="mt-5">
-          <QuickAdd userId={user.id} onSaved={() => void refetch()} />
+          <QuickAdd userId={user.id} ledgerId={activeId} onSaved={() => void refetch()} />
         </div>
 
 
+
+        <div className="mt-4">
+          <RemindersCard
+            rows={recurringRows}
+            userId={user.id}
+            ledgerId={activeId}
+            onLogged={() => void refetch()}
+          />
+        </div>
 
         <div className="mt-6 grid gap-3 sm:grid-cols-3">
           {[
@@ -348,7 +382,15 @@ function Dashboard() {
 
         <div className="mt-4 grid gap-4 lg:grid-cols-2">
           <RecurringSection userId={user.id} />
-          <ShareSection userId={user.id} userEmail={user.email ?? ""} start={start} end={end} />
+          <LedgerPanel
+            ledger={activeLedger}
+            userId={user.id}
+            isOwner={isOwner}
+            onMembershipChange={() => {
+              refreshLedgers();
+              void refetch();
+            }}
+          />
         </div>
 
 
@@ -400,6 +442,7 @@ function Dashboard() {
         editing={editing}
         userId={user.id}
         defaultDate={entryDefaultDate}
+        ledgerId={activeId}
         onSaved={() => void refetch()}
       />
 
