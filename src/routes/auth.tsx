@@ -3,6 +3,7 @@ import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { motion, AnimatePresence } from "motion/react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { pendingInvite } from "@/lib/ledgers";
 import { lovable } from "@/integrations/lovable/index";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -32,6 +33,14 @@ type Mode = "signin" | "signup" | "forgot";
 
 function AuthPage() {
   const navigate = useNavigate();
+  const goNext = useCallback(() => {
+    const token = pendingInvite.get();
+    if (token) {
+      navigate({ to: "/invite/$token", params: { token }, replace: true });
+      return;
+    }
+    goNext();
+  }, [navigate]);
   const [mode, setMode] = useState<Mode>("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -40,9 +49,9 @@ function AuthPage() {
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate({ to: "/dashboard", replace: true });
+      if (data.session) goNext();
     });
-  }, [navigate]);
+  }, [goNext]);
 
   const google = async () => {
     setBusy(true);
@@ -55,7 +64,7 @@ function AuthPage() {
       return;
     }
     if (result.redirected) return;
-    navigate({ to: "/dashboard", replace: true });
+    goNext();
   };
 
   const submit = async (e: React.FormEvent) => {
@@ -88,7 +97,7 @@ function AuthPage() {
         setSent("confirm");
         return;
       }
-      navigate({ to: "/dashboard", replace: true });
+      goNext();
       return;
     }
     const { error } = await supabase.auth.signInWithPassword({ email, password });
@@ -97,7 +106,7 @@ function AuthPage() {
       toast.error(error.message);
       return;
     }
-    navigate({ to: "/dashboard", replace: true });
+    goNext();
   };
 
   return (
