@@ -24,6 +24,7 @@ export function EntryDialog({
   editing,
   userId,
   defaultDate,
+  ledgerId,
   onSaved,
 }: {
   open: boolean;
@@ -31,6 +32,7 @@ export function EntryDialog({
   editing: Txn | null;
   userId: string;
   defaultDate?: string;
+  ledgerId: string | null;
   onSaved: () => void;
 }) {
   const [type, setType] = useState<EntryType>("expense");
@@ -69,8 +71,7 @@ export function EntryDialog({
       return;
     }
     setBusy(true);
-    const payload = {
-      user_id: userId,
+    const fields = {
       amount: value,
       type,
       category,
@@ -78,8 +79,12 @@ export function EntryDialog({
       note: note.trim() ? note.trim().slice(0, 200) : null,
     };
     const { error } = editing
-      ? await supabase.from("transactions").update(payload).eq("id", editing.id)
-      : await supabase.from("transactions").insert(payload);
+      ? // Keep the original author and ledger on edits.
+        await supabase.from("transactions").update(fields).eq("id", editing.id)
+      : await supabase
+          .from("transactions")
+          .insert({ ...fields, user_id: userId, ledger_id: ledgerId });
+
     setBusy(false);
     if (error) {
       toast.error(error.message);

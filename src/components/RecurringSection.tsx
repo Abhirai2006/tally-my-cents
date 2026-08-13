@@ -27,6 +27,7 @@ export function RecurringSection({ userId }: { userId: string }) {
   const [category, setCategory] = useState("Housing & Rent");
   const [note, setNote] = useState("");
   const [day, setDay] = useState("1");
+  const [remind, setRemind] = useState("3");
   const [busy, setBusy] = useState(false);
 
   const { data: rows = [] } = useQuery({
@@ -35,7 +36,7 @@ export function RecurringSection({ userId }: { userId: string }) {
       const { data, error } = await supabase
         .from("recurring_entries")
         .select("*")
-        .order("day_of_month");
+        .order("due_day");
       if (error) throw error;
       return (data ?? []) as Recurring[];
     },
@@ -59,6 +60,11 @@ export function RecurringSection({ userId }: { userId: string }) {
       toast.error("Pick a day between 1 and 28.");
       return;
     }
+    const remindNum = Number(remind);
+    if (!Number.isInteger(remindNum) || remindNum < 0 || remindNum > 14) {
+      toast.error("Remind between 0 and 14 days before.");
+      return;
+    }
     setBusy(true);
     const { error } = await supabase.from("recurring_entries").insert({
       user_id: userId,
@@ -67,6 +73,8 @@ export function RecurringSection({ userId }: { userId: string }) {
       category,
       note: note.trim() || null,
       day_of_month: dayNum,
+      due_day: dayNum,
+      remind_days_before: remindNum,
     });
     setBusy(false);
     if (error) {
@@ -120,7 +128,7 @@ export function RecurringSection({ userId }: { userId: string }) {
           {rows.map((r) => (
             <li key={r.id} className="flex items-center gap-3 py-3">
               <span className="money grid h-9 w-9 shrink-0 place-items-center rounded-full bg-accent text-xs">
-                {r.day_of_month}
+                {r.due_day || r.day_of_month}
               </span>
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm">
@@ -128,7 +136,9 @@ export function RecurringSection({ userId }: { userId: string }) {
                   {r.note ? <span className="ml-2 text-xs text-muted-foreground">{r.note}</span> : null}
                 </p>
                 <p className="text-[11px] text-muted-foreground">
-                  {r.active ? `Every month on day ${r.day_of_month}` : "Paused"}
+                  {r.active
+                    ? `Every month on day ${r.due_day || r.day_of_month} · reminds ${r.remind_days_before}d before`
+                    : "Paused"}
                 </p>
               </div>
               <span
@@ -187,7 +197,7 @@ export function RecurringSection({ userId }: { userId: string }) {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="rec-day">Day of month</Label>
+                <Label htmlFor="rec-day">Due day</Label>
                 <Input
                   id="rec-day"
                   inputMode="numeric"
@@ -197,6 +207,17 @@ export function RecurringSection({ userId }: { userId: string }) {
                   placeholder="1"
                 />
               </div>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="rec-remind">Remind me (days before)</Label>
+              <Input
+                id="rec-remind"
+                inputMode="numeric"
+                value={remind}
+                onChange={(e) => setRemind(e.target.value)}
+                className="money"
+                placeholder="3"
+              />
             </div>
             <div className="space-y-2">
               <Label>Category</Label>

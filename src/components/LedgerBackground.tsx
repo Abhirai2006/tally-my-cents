@@ -3,27 +3,17 @@ import { useEffect, useRef } from "react";
 /**
  * Layered ambient background:
  *  - soft mesh-gradient washes that breathe
- *  - a pointer-following spotlight
  *  - a canvas field of drifting gold specks (paper dust)
  */
 export function LedgerBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const wrapRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const wrap = wrapRef.current;
-    const onMove = (e: PointerEvent) => {
-      if (!wrap) return;
-      wrap.style.setProperty("--mx", `${(e.clientX / window.innerWidth) * 100}%`);
-      wrap.style.setProperty("--my", `${(e.clientY / window.innerHeight) * 100}%`);
-    };
-    window.addEventListener("pointermove", onMove);
-
     const canvas = canvasRef.current;
-    if (!canvas || reduced) return () => window.removeEventListener("pointermove", onMove);
+    if (!canvas || reduced) return;
     const ctx = canvas.getContext("2d");
-    if (!ctx) return () => window.removeEventListener("pointermove", onMove);
+    if (!ctx) return;
 
     let raf = 0;
     let w = 0;
@@ -57,7 +47,7 @@ export function LedgerBackground() {
     const readTint = () =>
       (
         getComputedStyle(document.documentElement).getPropertyValue("--speck-rgb").trim() ||
-        "124 108 214"
+        "176 154 96"
       ).replace(/\s+/g, ", ");
 
     let tint = readTint();
@@ -90,18 +80,16 @@ export function LedgerBackground() {
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", resize);
-      window.removeEventListener("pointermove", onMove);
     };
   }, []);
 
   return (
-    <div ref={wrapRef} className="ledger-bg" aria-hidden="true">
+    <div className="ledger-bg" aria-hidden="true">
       <div className="mesh mesh-a" />
       <div className="mesh mesh-b" />
       <div className="mesh mesh-c" />
       <div className="bg-grid" />
       <canvas ref={canvasRef} className="bg-specks" />
-      <div className="spotlight" />
       <div className="vignette" />
     </div>
   );

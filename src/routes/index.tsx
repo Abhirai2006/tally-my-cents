@@ -7,6 +7,7 @@ import { Footer } from "@/components/Footer";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { UserCount } from "@/components/UserCount";
 import { Rupee3D } from "@/components/Rupee3D";
+import { TryQuickAdd } from "@/components/TryQuickAdd";
 
 import heroVideo from "@/assets/hero-ledger.mp4.asset.json";
 import heroPoster from "@/assets/hero-poster.jpg";
@@ -286,7 +287,13 @@ function Landing() {
         </div>
       </div>
 
+      <section className="mx-auto max-w-3xl px-4 pt-20">
+        <h2 className="sr-only">Try quick add</h2>
+        <TryQuickAdd />
+      </section>
+
       <section className="mx-auto max-w-5xl px-4 py-20">
+        <h2 className="sr-only">What Tally does</h2>
         <div className="grid gap-6 sm:grid-cols-3">
           {[
             {
@@ -319,7 +326,7 @@ function Landing() {
               >
                 <f.icon className="h-5 w-5 text-gold" />
               </motion.div>
-              <h2 className="mt-4 font-display text-xl">{f.title}</h2>
+              <h3 className="mt-4 font-display text-xl">{f.title}</h3>
               <p className="mt-2 text-sm text-muted-foreground">{f.body}</p>
             </motion.div>
           ))}

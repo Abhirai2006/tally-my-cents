@@ -41,6 +41,76 @@ export type Database = {
         }
         Relationships: []
       }
+      ledger_invites: {
+        Row: {
+          created_at: string
+          created_by: string
+          expires_at: string | null
+          id: string
+          ledger_id: string
+          revoked: boolean
+          token: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          expires_at?: string | null
+          id?: string
+          ledger_id: string
+          revoked?: boolean
+          token: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          expires_at?: string | null
+          id?: string
+          ledger_id?: string
+          revoked?: boolean
+          token?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ledger_invites_ledger_id_fkey"
+            columns: ["ledger_id"]
+            isOneToOne: false
+            referencedRelation: "ledgers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ledger_members: {
+        Row: {
+          id: string
+          joined_at: string
+          ledger_id: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          joined_at?: string
+          ledger_id: string
+          role?: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          joined_at?: string
+          ledger_id?: string
+          role?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ledger_members_ledger_id_fkey"
+            columns: ["ledger_id"]
+            isOneToOne: false
+            referencedRelation: "ledgers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ledger_shares: {
         Row: {
           created_at: string
@@ -68,6 +138,27 @@ export type Database = {
         }
         Relationships: []
       }
+      ledgers: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          owner_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name?: string
+          owner_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          owner_id?: string
+        }
+        Relationships: []
+      }
       recurring_entries: {
         Row: {
           active: boolean
@@ -75,9 +166,12 @@ export type Database = {
           category: string
           created_at: string
           day_of_month: number
+          dismissed_month: string | null
+          due_day: number
           id: string
           last_posted_month: string | null
           note: string | null
+          remind_days_before: number
           type: string
           updated_at: string
           user_id: string
@@ -88,9 +182,12 @@ export type Database = {
           category: string
           created_at?: string
           day_of_month?: number
+          dismissed_month?: string | null
+          due_day?: number
           id?: string
           last_posted_month?: string | null
           note?: string | null
+          remind_days_before?: number
           type: string
           updated_at?: string
           user_id: string
@@ -101,9 +198,12 @@ export type Database = {
           category?: string
           created_at?: string
           day_of_month?: number
+          dismissed_month?: string | null
+          due_day?: number
           id?: string
           last_posted_month?: string | null
           note?: string | null
+          remind_days_before?: number
           type?: string
           updated_at?: string
           user_id?: string
@@ -153,6 +253,7 @@ export type Database = {
           created_at: string
           currency: string
           id: string
+          ledger_id: string | null
           note: string | null
           occurred_on: string
           type: string
@@ -165,6 +266,7 @@ export type Database = {
           created_at?: string
           currency?: string
           id?: string
+          ledger_id?: string | null
           note?: string | null
           occurred_on?: string
           type: string
@@ -177,20 +279,64 @@ export type Database = {
           created_at?: string
           currency?: string
           id?: string
+          ledger_id?: string | null
           note?: string | null
           occurred_on?: string
           type?: string
           updated_at?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "transactions_ledger_id_fkey"
+            columns: ["ledger_id"]
+            isOneToOne: false
+            referencedRelation: "ledgers"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
+      accept_ledger_invite: {
+        Args: { _token: string }
+        Returns: {
+          ledger_id: string
+          ledger_name: string
+          status: string
+        }[]
+      }
+      can_access_ledger: {
+        Args: { _ledger: string; _user: string }
+        Returns: boolean
+      }
       can_view_ledger: { Args: { _owner_id: string }; Returns: boolean }
+      ensure_default_ledger: { Args: never; Returns: string }
+      is_ledger_owner: {
+        Args: { _ledger: string; _user: string }
+        Returns: boolean
+      }
+      ledger_member_list: {
+        Args: { _ledger: string }
+        Returns: {
+          email: string
+          joined_at: string
+          role: string
+          user_id: string
+        }[]
+      }
+      preview_ledger_invite: {
+        Args: { _token: string }
+        Returns: {
+          already_member: boolean
+          ledger_name: string
+          owner_is_self: boolean
+          status: string
+        }[]
+      }
       tally_user_count: { Args: never; Returns: number }
     }
     Enums: {

@@ -228,8 +228,6 @@
   z-index: 0;
   pointer-events: none;
   overflow: hidden;
-  --mx: 50%;
-  --my: 30%;
 }
 
 .ledger-bg .mesh {
@@ -244,7 +242,7 @@
   height: 46vw;
   left: -10vw;
   top: -12vw;
-  opacity: 0.3;
+  opacity: 0.26;
   background: radial-gradient(circle at 30% 30%, var(--mesh-1), transparent 70%);
   animation: mesh-drift-a 34s ease-in-out infinite;
 }
@@ -254,8 +252,12 @@
   height: 40vw;
   right: -8vw;
   top: 4vw;
-  opacity: 0.28;
-  background: radial-gradient(circle at 60% 40%, var(--mesh-2), transparent 70%);
+  opacity: 0.2;
+  background: radial-gradient(
+    circle at 60% 40%,
+    color-mix(in oklab, var(--mesh-2) 55%, var(--mesh-1)),
+    transparent 70%
+  );
   animation: mesh-drift-b 42s ease-in-out infinite;
 }
 
@@ -264,15 +266,19 @@
   height: 44vw;
   left: 18vw;
   bottom: -16vw;
-  opacity: 0.26;
-  background: radial-gradient(circle at 40% 60%, var(--mesh-3), transparent 70%);
+  opacity: 0.22;
+  background: radial-gradient(
+    circle at 40% 60%,
+    color-mix(in oklab, var(--mesh-3) 70%, var(--mesh-1)),
+    transparent 70%
+  );
   animation: mesh-drift-c 38s ease-in-out infinite;
 }
 
 .dark .ledger-bg .mesh-a,
 .dark .ledger-bg .mesh-b,
 .dark .ledger-bg .mesh-c {
-  opacity: 0.36;
+  opacity: 0.3;
 }
 
 .ledger-bg .bg-grid {
@@ -288,17 +294,6 @@
 .ledger-bg .bg-specks {
   position: absolute;
   inset: 0;
-}
-
-.ledger-bg .spotlight {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    460px circle at var(--mx) var(--my),
-    color-mix(in oklab, var(--mesh-2) 20%, transparent),
-    transparent 70%
-  );
-  transition: background 240ms ease-out;
 }
 
 .ledger-bg .vignette {
