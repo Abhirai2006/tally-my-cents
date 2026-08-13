@@ -100,3 +100,18 @@ export function useLedgers(userId: string) {
     isLoading: query.isLoading,
   };
 }
+
+const PENDING_KEY = "tally:pending-invite";
+
+/** Remembers an invite token across the sign-in / OAuth round trip. */
+export const pendingInvite = {
+  set(token: string) {
+    if (typeof window !== "undefined") localStorage.setItem(PENDING_KEY, token);
+  },
+  get(): string | null {
+    return typeof window === "undefined" ? null : localStorage.getItem(PENDING_KEY);
+  },
+  clear() {
+    if (typeof window !== "undefined") localStorage.removeItem(PENDING_KEY);
+  },
+};
