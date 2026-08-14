@@ -7,7 +7,26 @@ export type Ledger = {
   owner_id: string;
   name: string;
   created_at: string;
+  owner_email: string | null;
+  owner_name: string | null;
 };
+
+const GENERIC_NAMES = ["personal ledger", "my ledger", "shared ledger"];
+
+/**
+ * What a ledger should be called in the switcher and panels: the owner's own
+ * custom name when they set one, otherwise a name derived from the owner.
+ */
+export function ledgerDisplayName(ledger: Ledger, viewerId: string): string {
+  const custom = ledger.name?.trim();
+  const isGeneric = !custom || GENERIC_NAMES.includes(custom.toLowerCase());
+  if (!isGeneric) return custom;
+  if (ledger.owner_id === viewerId) return "My ledger";
+  const base =
+    ledger.owner_name?.trim() || (ledger.owner_email ?? "someone").split("@")[0] || "someone";
+  return `${base}'s ledger`;
+}
+
 
 export type LedgerMember = {
   user_id: string;
