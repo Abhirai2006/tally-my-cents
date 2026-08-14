@@ -328,6 +328,18 @@ export type Database = {
           user_id: string
         }[]
       }
+      ledgers_with_owner: {
+        Args: never
+        Returns: {
+          created_at: string
+          id: string
+          name: string
+          owner_email: string
+          owner_id: string
+          owner_name: string
+        }[]
+      }
+      owner_ledger_name: { Args: { _user: string }; Returns: string }
       preview_ledger_invite: {
         Args: { _token: string }
         Returns: {
