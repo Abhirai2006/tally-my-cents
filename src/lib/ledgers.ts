@@ -70,25 +70,20 @@ export function useLedgers(userId: string) {
   const query = useQuery({
     queryKey: ["ledgers", userId],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("ledgers")
-        .select("*")
-        .order("created_at", { ascending: true });
+      const { data, error } = await supabase.rpc("ledgers_with_owner");
       if (error) throw error;
       let rows = (data ?? []) as Ledger[];
       if (!rows.length) {
         const { error: rpcError } = await supabase.rpc("ensure_default_ledger");
         if (rpcError) throw rpcError;
-        const retry = await supabase
-          .from("ledgers")
-          .select("*")
-          .order("created_at", { ascending: true });
+        const retry = await supabase.rpc("ledgers_with_owner");
         if (retry.error) throw retry.error;
         rows = (retry.data ?? []) as Ledger[];
       }
       return rows;
     },
   });
+
 
   const ledgers = query.data ?? [];
 
