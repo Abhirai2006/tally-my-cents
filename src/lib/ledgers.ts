@@ -58,6 +58,13 @@ export function inviteUrl(token: string): string {
   return `${origin}/invite/${token}`;
 }
 
+/** Owner-only rename of a ledger. The custom name then wins everywhere. */
+export async function renameLedger(id: string, name: string) {
+  const { error } = await supabase.from("ledgers").update({ name: name.trim() }).eq("id", id);
+  if (error) throw error;
+}
+
+
 /**
  * Loads every ledger the signed-in user can reach (their own plus any they
  * joined through an invite link), creating a default personal ledger the very

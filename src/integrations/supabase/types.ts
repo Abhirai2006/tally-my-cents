@@ -159,6 +159,27 @@ export type Database = {
         }
         Relationships: []
       }
+      profiles: {
+        Row: {
+          created_at: string
+          has_seen_onboarding: boolean
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          has_seen_onboarding?: boolean
+          id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          has_seen_onboarding?: boolean
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       recurring_entries: {
         Row: {
           active: boolean
