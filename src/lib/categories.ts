@@ -43,8 +43,10 @@ export const EXPENSE_CATEGORIES = [
   "Personal Care",
   "Gifts & Donations",
   "Insurance",
+  "Savings",
   "Other",
 ] as const;
+
 
 export const INCOME_CATEGORIES = [
   "Salary",
@@ -74,7 +76,9 @@ export const CATEGORY_ICONS: Record<string, LucideIcon> = {
   "Personal Care": Sparkles,
   "Gifts & Donations": HandHeart,
   Insurance: ShieldCheck,
+  Savings: PiggyBank,
   Salary: Wallet,
+
   Freelance: Laptop,
   Business: Briefcase,
   Investment: TrendingUp,
